@@ -20,6 +20,12 @@ class _UserDialogState extends ConsumerState<UserDialog> {
     final navInfo = ref.watch(navInfoProvider);
     final navStat = useFuture(useMemoized(() => UserApi.navStat()),
         initialData: {"following": 0, "follower": 0, "dynamic_count": 0});
+    final levelValue = useMemoized(() {
+      if (navInfo == null) return 0.0;
+      if (navInfo.data.levelInfo!.nextExp == "--") return 1.0;
+      return navInfo.data.levelInfo!.currentExp /
+          int.parse(navInfo.data.levelInfo!.nextExp);
+    }, []);
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.5,
       child: Column(
@@ -130,7 +136,7 @@ class _UserDialogState extends ConsumerState<UserDialog> {
                 Flexible(
                     child: LinearProgressIndicator(
                   minHeight: 1.4,
-                  value: 1,
+                  value: levelValue,
                   color: Theme.of(context).colorScheme.primary,
                 )),
                 Padding(
