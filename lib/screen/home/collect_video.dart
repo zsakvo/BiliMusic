@@ -206,10 +206,8 @@ class _CollectVideoState extends ConsumerState<CollectVideo> {
                                 ],
                               ),
                               onTap: () {
-                                Future.microtask(() {
-                                  PlayerUtils.playList(player, ref, resList,
-                                      initialIndex: index);
-                                });
+                                PlayerUtils.playList(player, ref, resList,
+                                    initialIndex: index);
                               },
                             ),
                           );
