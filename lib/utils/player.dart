@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:memory_cache/memory_cache.dart';
 
+/// 待处理 [Linux 播放问题]
+/// 目前来看，Linux 下，MPV 无法正常响应播放列表，可能需要自己实现播放队列
+
 class PlayerUtils {
   static playRes(AudioPlayer player, WidgetRef ref, PlayRes res,
       {append = true}) {

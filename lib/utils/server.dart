@@ -33,7 +33,7 @@ class BiliServer {
                 }, responseType: ResponseType.bytes));
 
             request.response.headers.clear();
-            request.response.bufferOutput = false;
+            request.response.bufferOutput = true;
             file.headers.forEach((name, value) {
               final filteredValue = value
                   .map((e) => e.replaceAll(RegExp(r'[^\x09\x20-\x7F]'), '?'))
@@ -41,8 +41,8 @@ class BiliServer {
               request.response.headers.set(name, filteredValue);
             });
             request.response.headers
-                .set(Headers.contentTypeHeader, "audio/mp4");
-            request.response.headers.set("connection", "close");
+                .set(Headers.contentTypeHeader, "audio/mp3");
+            // request.response.headers.set("connection", "close");
             request.response.statusCode = file.statusCode ?? 200;
             request.response.add(file.data);
             await request.response.flush();
