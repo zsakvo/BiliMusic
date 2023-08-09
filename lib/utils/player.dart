@@ -61,4 +61,18 @@ class PlayerUtils {
       }
     });
   }
+
+  static playLinux(AudioPlayer player, WidgetRef ref, PlayRes res) {
+    Future.microtask(() async {
+      final source = LockCachingAudioSource(
+          Uri.parse(
+            "http://127.0.0.1:43374/v.m4a?aid=${res.aid}&bvid=${res.bvid}&cid=${res.cid}",
+          ),
+          tag: res.mediaItem);
+      await ref.read(playListProvider).clear();
+      await ref.read(playListProvider).add(source);
+      await player.setAudioSource(source);
+      await player.play();
+    });
+  }
 }
