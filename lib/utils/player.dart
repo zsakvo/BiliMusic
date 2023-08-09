@@ -1,6 +1,7 @@
 import 'package:bilimusic/components/player/provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:memory_cache/memory_cache.dart';
 
 class PlayerUtils {
   static playRes(AudioPlayer player, WidgetRef ref, PlayRes res,
@@ -10,7 +11,7 @@ class PlayerUtils {
       ref.read(currentPlayingIndex.notifier).state = 0;
       ref.read(currentPlayingRes.notifier).state = res;
       await ref.read(playListProvider).clear();
-      await ref.read(playListProvider).add(AudioSource.uri(
+      await ref.read(playListProvider).add(LockCachingAudioSource(
           Uri.parse(
             "http://127.0.0.1:43374/v.m4a?aid=${res.aid}&bvid=${res.bvid}&cid=${res.cid}",
           ),
@@ -23,20 +24,31 @@ class PlayerUtils {
 
   static playList(AudioPlayer player, WidgetRef ref, List<PlayRes> resList,
       {replace = true, initialIndex = 0}) async {
-    ref.read(playResProvider.notifier).replaceList(resList);
-    ref.read(currentPlayingIndex.notifier).state = initialIndex;
-    ref.read(currentPlayingRes.notifier).state = resList[initialIndex];
-    await ref.read(playListProvider).clear();
-    final resolvingAudioSource = [
-      for (PlayRes video in resList)
-        AudioSource.uri(
-            Uri.parse(
-                "http://127.0.0.1:43374/v.m4a?aid=${video.aid}&bvid=${video.bvid}&cid=${video.cid}"),
-            tag: video.mediaItem),
-    ];
-    ref.read(playListProvider).addAll(resolvingAudioSource);
-    await player.setAudioSource(ref.read(playListProvider),
-        initialIndex: initialIndex, initialPosition: Duration.zero);
-    player.play();
+    final listKey = resList.hashCode;
+    final currentKey = MemoryCache.instance.read("_currentListKey");
+    if (listKey != currentKey) {
+      currentKey == null
+          ? MemoryCache.instance.create("_currentListKey", listKey)
+          : MemoryCache.instance.update("_currentListKey", listKey);
+
+      ref.read(playResProvider.notifier).replaceList(resList);
+      ref.read(currentPlayingIndex.notifier).state = initialIndex;
+      ref.read(currentPlayingRes.notifier).state = resList[initialIndex];
+      await ref.read(playListProvider).clear();
+      final resolvingAudioSource = [
+        for (PlayRes video in resList)
+          LockCachingAudioSource(
+              Uri.parse(
+                  "http://127.0.0.1:43374/v.m4a?aid=${video.aid}&bvid=${video.bvid}&cid=${video.cid}"),
+              tag: video.mediaItem),
+      ];
+      ref.read(playListProvider).addAll(resolvingAudioSource);
+
+      await player.setAudioSource(ref.read(playListProvider),
+          initialIndex: initialIndex, initialPosition: Duration.zero);
+      player.play();
+    } else {
+      player.seek(Duration.zero, index: initialIndex);
+    }
   }
 }

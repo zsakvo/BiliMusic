@@ -388,7 +388,7 @@ class MusicPlayerState extends ConsumerState<MusicPlayer> {
                       thumbGlowColor:
                           currentId.value == null ? Colors.transparent : null,
                       thumbCanPaintOutsideBar: true,
-                      buffered: Duration(milliseconds: bufferedSeconds.value),
+                      // buffered: Duration(milliseconds: bufferedSeconds.value),
                       progress: Duration(milliseconds: currentSeconds.value),
                       total: Duration(milliseconds: allSeconds.value),
                       onDragStart: (details) {

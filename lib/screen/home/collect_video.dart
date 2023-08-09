@@ -205,19 +205,11 @@ class _CollectVideoState extends ConsumerState<CollectVideo> {
                                   )
                                 ],
                               ),
-                              onTap: () async {
-                                PlayerUtils.playList(player, ref, resList,
-                                    initialIndex: index);
-                                // PlayerUtils.playRes(
-                                //     player,
-                                //     ref,
-                                //     PlayRes(
-                                //         type: ResType.video,
-                                //         title: video.title,
-                                //         artist: video.upper.name,
-                                //         cover: video.cover,
-                                //         aid: video.id),
-                                //     append: false);
+                              onTap: () {
+                                Future.microtask(() {
+                                  PlayerUtils.playList(player, ref, resList,
+                                      initialIndex: index);
+                                });
                               },
                             ),
                           );

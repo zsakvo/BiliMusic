@@ -21,16 +21,11 @@ class BiliServer {
       if (request.method == 'GET') {
         switch (request.uri.path) {
           case '/v.m4a':
-            String? cdnUrl =
-                MemoryCache.instance.read<String>(_requestKey(request.uri));
-            if (cdnUrl == null) {
-              MemoryCache.instance.delete(_requestKey(request.uri));
-            }
-            cdnUrl ??= await getCdnUrl(
+            String cdnUrl = await getCdnUrl(
               request,
             );
 
-            var file = await Ajax().get(cdnUrl!,
+            var file = await Ajax().get(cdnUrl,
                 options: Options(headers: {
                   "User-Agent": ApiConstants.userAgent,
                   "Referer": ApiConstants.bilibiliBase,
@@ -70,6 +65,11 @@ class BiliServer {
   getCdnUrl(
     request,
   ) async {
+    final cachedUrl =
+        MemoryCache.instance.read<String>(_requestKey(request.uri));
+    if (cachedUrl != null) {
+      return cachedUrl;
+    }
     final aid = request.uri.queryParameters["aid"];
     final bvid = request.uri.queryParameters["bvid"];
     var cid = request.uri.queryParameters["cid"];
@@ -81,7 +81,7 @@ class BiliServer {
     MemoryCache.instance.create(
       key,
       url,
-      expiry: const Duration(seconds: 10 * 60),
+      expiry: const Duration(minutes: 100),
     );
     return url;
   }
