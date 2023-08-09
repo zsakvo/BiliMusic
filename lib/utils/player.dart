@@ -17,7 +17,7 @@ class PlayerUtils {
           ),
           tag: res.mediaItem));
       await player.setAudioSource(ref.read(playListProvider),
-          initialIndex: 0, initialPosition: Duration.zero);
+          initialIndex: 0, initialPosition: Duration.zero, preload: false);
     }
     player.play();
   }
@@ -45,7 +45,9 @@ class PlayerUtils {
       ref.read(playListProvider).addAll(resolvingAudioSource);
 
       await player.setAudioSource(ref.read(playListProvider),
-          initialIndex: initialIndex, initialPosition: Duration.zero);
+          preload: false,
+          initialIndex: initialIndex,
+          initialPosition: Duration.zero);
       player.play();
     } else {
       player.seek(Duration.zero, index: initialIndex);
