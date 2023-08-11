@@ -1,4 +1,4 @@
-package cc.zsakvo.bilimusic.bilimusic
+package cc.zsakvo.bilimusic
 
 import io.flutter.embedding.android.FlutterActivity
 
