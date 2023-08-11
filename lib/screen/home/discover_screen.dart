@@ -53,7 +53,7 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
     return Material(
       child: CustomScrollView(
         slivers: [
-          if (upMid != null) ...[
+          if (upMid != null && collectListItems.data!.isNotEmpty) ...[
             SliverPadding(
               padding: const EdgeInsets.only(top: 28, left: 28, bottom: 0),
               sliver: SliverToBoxAdapter(

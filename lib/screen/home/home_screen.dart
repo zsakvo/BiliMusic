@@ -138,32 +138,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                   height: 56,
                                                 ),
                                               ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 16),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              bottom: 3),
-                                                      child: Text(
-                                                        navInfo.data.uname!,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .titleMedium,
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 16),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                bottom: 3),
+                                                        child: Text(
+                                                          navInfo.data.uname!,
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .titleMedium,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    SvgPicture.asset(
-                                                      "assets/svg/lv${navInfo.data.levelInfo!.currentLevel}.svg",
-                                                      width: 10,
-                                                      height: 10,
-                                                    ),
-                                                  ],
+                                                      SvgPicture.asset(
+                                                        "assets/svg/lv${navInfo.data.levelInfo!.currentLevel}.svg",
+                                                        width: 10,
+                                                        height: 10,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
+                                              )
                                             ]),
                                       onTap: () async {
                                         if (navInfo?.data.isLogin != true) {

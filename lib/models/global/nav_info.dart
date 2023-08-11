@@ -274,7 +274,7 @@ class LevelInfo {
   int currentLevel;
   int currentMin;
   int currentExp;
-  String nextExp;
+  dynamic nextExp;
 
   LevelInfo({
     required this.currentLevel,

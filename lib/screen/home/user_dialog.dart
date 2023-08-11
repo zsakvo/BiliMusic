@@ -24,7 +24,9 @@ class _UserDialogState extends ConsumerState<UserDialog> {
       if (navInfo == null) return 0.0;
       if (navInfo.data.levelInfo!.nextExp == "--") return 1.0;
       return navInfo.data.levelInfo!.currentExp /
-          int.parse(navInfo.data.levelInfo!.nextExp);
+              navInfo.data.levelInfo!.nextExp is String
+          ? double.parse(navInfo.data.levelInfo!.nextExp)
+          : navInfo.data.levelInfo!.nextExp * 1.0;
     }, []);
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.5,
