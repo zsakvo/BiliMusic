@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bilimusic/components/player/provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
@@ -16,11 +18,17 @@ class PlayerUtils {
         ref.read(currentPlayingIndex.notifier).state = 0;
         ref.read(currentPlayingRes.notifier).state = res;
         await ref.read(playListProvider).clear();
-        await ref.read(playListProvider).add(LockCachingAudioSource(
-            Uri.parse(
-              "http://127.0.0.1:43374/v.m4a?aid=${res.aid}&bvid=${res.bvid}&cid=${res.cid}",
-            ),
-            tag: res.mediaItem));
+        await ref.read(playListProvider).add(
+              Platform.isMacOS
+                  ? LockCachingAudioSource(
+                      Uri.parse(
+                          "http://127.0.0.1:43374/v.m4a?aid=${res.aid}&bvid=${res.bvid}&cid=${res.cid}"),
+                      tag: res.mediaItem)
+                  : AudioSource.uri(
+                      Uri.parse(
+                          "http://127.0.0.1:43374/v.m4a?aid=${res.aid}&bvid=${res.bvid}&cid=${res.cid}"),
+                      tag: res.mediaItem),
+            );
         await player.setAudioSource(ref.read(playListProvider),
             initialIndex: 0, initialPosition: Duration.zero, preload: false);
       }
@@ -44,10 +52,15 @@ class PlayerUtils {
         await ref.read(playListProvider).clear();
         final resolvingAudioSource = [
           for (PlayRes video in resList)
-            LockCachingAudioSource(
-                Uri.parse(
-                    "http://127.0.0.1:43374/v.m4a?aid=${video.aid}&bvid=${video.bvid}&cid=${video.cid}"),
-                tag: video.mediaItem),
+            Platform.isMacOS
+                ? LockCachingAudioSource(
+                    Uri.parse(
+                        "http://127.0.0.1:43374/v.m4a?aid=${video.aid}&bvid=${video.bvid}&cid=${video.cid}"),
+                    tag: video.mediaItem)
+                : AudioSource.uri(
+                    Uri.parse(
+                        "http://127.0.0.1:43374/v.m4a?aid=${video.aid}&bvid=${video.bvid}&cid=${video.cid}"),
+                    tag: video.mediaItem),
         ];
         ref.read(playListProvider).addAll(resolvingAudioSource);
 
