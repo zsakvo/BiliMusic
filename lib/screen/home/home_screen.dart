@@ -319,6 +319,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                       IconData(0xe75a,
                                                           fontFamily: 'Icon')),
                                                 )),
+                                        TextButton(
+                                            onPressed: () {
+                                              ref
+                                                  .read(topbarStateProvider
+                                                      .notifier)
+                                                  .pushState(TopBarState(
+                                                      showBack: true,
+                                                      title: 'cids'));
+
+                                              context.go(
+                                                  "/browser/play_list/cids/438506141");
+                                            },
+                                            child: const Text("测试")),
                                         SizedBox.fromSize(
                                           size: const Size(0, 46),
                                         )

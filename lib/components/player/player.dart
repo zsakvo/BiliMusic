@@ -1,17 +1,15 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:bilimusic/components/player/player_proivder.dart';
 import 'package:bilimusic/components/player/provider.dart';
 import 'package:bilimusic/provider.dart';
 import 'package:bilimusic/screen/config/config_screen.dart';
 import 'package:bilimusic/screen/home/home_screen.dart';
-import 'package:bilimusic/screen/local_fav/local_fav_provider.dart';
 import 'package:bilimusic/screen/playing/playing_screen.dart';
-import 'package:bilimusic/utils/string.dart';
+import 'package:bilimusic/utils/play.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:just_audio_background/just_audio_background.dart';
 
 class MusicPlayer extends StatefulHookConsumerWidget {
   const MusicPlayer({super.key});
@@ -23,26 +21,14 @@ class MusicPlayer extends StatefulHookConsumerWidget {
 class MusicPlayerState extends ConsumerState<MusicPlayer> {
   @override
   Widget build(BuildContext context) {
-    final cover = useState<String?>(null);
-    final title = useState("");
-    final artist = useState("");
-    final allSeconds = useState<int>(0);
-    final currentSeconds = useState<int>(0);
-    final bufferedSeconds = useState<int>(0);
-    final allPosition = useState("");
-    final currentPosition = useState("");
-    final audioPlayer = ref.watch(playerProvider);
-    final isPlaying = ref.watch(playerStateProvider);
+    final provider = playerComponentProvider(Player());
+    final playerModel = ref.watch(provider);
+
     final homeKey = ref.watch(homeScaffoldKey);
-    final currentId = useState<String?>(null);
-    final localFavItems = ref.watch(localFavItemsProvider);
+
     bool dragEnd = true;
 
     final showThumb = useState(false);
-
-    final isFav = useMemoized(
-        () => ref.read(localFavItemsProvider.notifier).isFav(currentId.value),
-        [currentId.value, localFavItems]);
 
     final playerDetailController = ref.watch(playerDetailControllerProvider);
 
@@ -72,67 +58,8 @@ class MusicPlayerState extends ConsumerState<MusicPlayer> {
       }
     }, [playerDetailController, colorIndex]);
 
-    final currentIndex = useState(0);
     final loopAll = useState(true);
 
-    useEffect(() {
-      audioPlayer.positionStream.listen((event) {
-        currentSeconds.value = event.inMilliseconds;
-        currentPosition.value =
-            StringFormatUtils.timeLengthFormat(event.inSeconds);
-        allSeconds.value = audioPlayer.duration?.inMilliseconds ?? 0;
-        if (audioPlayer.duration != null) {
-          allPosition.value = StringFormatUtils.timeLengthFormat(
-              audioPlayer.duration?.inSeconds ?? 0);
-        }
-      });
-      audioPlayer.bufferedPositionStream.listen((event) {
-        bufferedSeconds.value = event.inMilliseconds;
-      });
-      audioPlayer.sequenceStateStream.listen(
-        (event) {
-          currentId.value = event?.currentSource?.tag?.id;
-          MediaItem? item = event?.currentSource?.tag;
-
-          currentIndex.value = event?.currentIndex ?? 0;
-          if (item == null) {
-            cover.value = null;
-          } else {
-            cover.value = item.artUri.toString();
-            title.value = item.title;
-            artist.value = item.artist!;
-          }
-        },
-      );
-      audioPlayer.currentIndexStream.listen((event) {
-        ref.read(currentPlayingRes.notifier).state =
-            event == null ? null : ref.read(playResProvider)[event];
-        ref.read(currentPlayingIndex.notifier).state = event ?? 0;
-      });
-      audioPlayer.playerStateStream.listen((event) async {
-        ref.read(playerStateProvider.notifier).state = event.playing;
-        switch (event.processingState) {
-          case ProcessingState.buffering:
-            break;
-          case ProcessingState.ready:
-            break;
-          case ProcessingState.loading:
-            break;
-          case ProcessingState.completed:
-            break;
-          case ProcessingState.idle:
-            break;
-        }
-      });
-
-      return () {
-        audioPlayer.stop();
-        audioPlayer.dispose();
-      };
-    }, []);
-
-    final list = ref.read(playResProvider);
-    final currentRes = list.isNotEmpty ? list[currentIndex.value] : null;
     return Material(
       color: Colors.transparent,
       child: SizedBox(
@@ -145,7 +72,7 @@ class MusicPlayerState extends ConsumerState<MusicPlayer> {
               padding: const EdgeInsets.only(top: 8),
               child: Row(
                 children: [
-                  title.value.isEmpty
+                  playerModel.media == null
                       ? const Expanded(
                           flex: 1,
                           child: SizedBox(
@@ -167,17 +94,12 @@ class MusicPlayerState extends ConsumerState<MusicPlayer> {
                                         borderRadius: BorderRadius.circular(5)),
                                     child: InkWell(
                                       child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(4),
-                                        child: cover.value != null
-                                            ? CachedNetworkImage(
-                                                imageUrl:
-                                                    cover.value!.toString(),
-                                                fit: BoxFit.cover,
-                                              )
-                                            : Container(
-                                                color: Colors.grey[150],
-                                              ),
-                                      ),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          child: CachedNetworkImage(
+                                            imageUrl: playerModel.media!.cover,
+                                            fit: BoxFit.cover,
+                                          )),
                                       onTap: () {
                                         // 待实现
                                         if (playerDetailController == null) {
@@ -189,7 +111,7 @@ class MusicPlayerState extends ConsumerState<MusicPlayer> {
                                               homeKey
                                                   .currentState!
                                                   .showBottomSheet((context) {
-                                            return const PlayingScreen();
+                                            return PlayingScreen(playerModel);
                                           },
                                                       enableDrag: false,
                                                       constraints:
@@ -219,13 +141,14 @@ class MusicPlayerState extends ConsumerState<MusicPlayer> {
                                         children: [
                                           Flexible(
                                               child: Text(
-                                            title.value,
+                                            playerModel.media!.title,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                                 color: colorOnBackground),
                                           )),
-                                          Text("\t\t\t${artist.value}",
+                                          Text(
+                                              "\t\t\t${playerModel.media!.author}",
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 color: colorSecondary
@@ -234,7 +157,7 @@ class MusicPlayerState extends ConsumerState<MusicPlayer> {
                                         ],
                                       ),
                                       Text(
-                                        "${currentPosition.value} / ${allPosition.value}",
+                                        "${playerModel.progressText} / ${playerModel.totalText}",
                                         style: TextStyle(
                                             height: 1.8,
                                             color:
@@ -253,12 +176,8 @@ class MusicPlayerState extends ConsumerState<MusicPlayer> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
-                            onPressed: () {
-                              if (currentId.value == null) {
-                                return;
-                              }
-                              audioPlayer.seekToPrevious();
-                            },
+                            onPressed:
+                                ref.read(provider.notifier).playPreviousHandler,
                             icon: Icon(
                               Icons.skip_previous,
                               color: colorMain,
@@ -267,18 +186,10 @@ class MusicPlayerState extends ConsumerState<MusicPlayer> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: IconButton(
-                              onPressed: () async {
-                                if (currentId.value == null) {
-                                  return;
-                                }
-                                ref.read(playerStateProvider.notifier).state =
-                                    !isPlaying;
-                                isPlaying
-                                    ? audioPlayer.pause()
-                                    : audioPlayer.play();
-                              },
+                              onPressed: () =>
+                                  ref.read(provider.notifier).playHandler(),
                               icon: Icon(
-                                isPlaying
+                                playerModel.isPlaying
                                     ? Icons.pause_circle
                                     : Icons.play_circle,
                                 color: colorMain,
@@ -286,12 +197,8 @@ class MusicPlayerState extends ConsumerState<MusicPlayer> {
                               )),
                         ),
                         IconButton(
-                            onPressed: () {
-                              if (currentId.value == null) {
-                                return;
-                              }
-                              audioPlayer.seekToNext();
-                            },
+                            onPressed:
+                                ref.read(provider.notifier).playNextHandler,
                             icon: Icon(
                               Icons.skip_next,
                               color: colorMain,
@@ -311,35 +218,24 @@ class MusicPlayerState extends ConsumerState<MusicPlayer> {
                           Padding(
                               padding: const EdgeInsets.only(left: 12),
                               child: IconButton(
-                                onPressed: () {
-                                  if (currentRes == null) {
-                                    return;
-                                  }
-
-                                  ref
-                                      .read(localFavItemsProvider.notifier)
-                                      .toggleItem(currentRes);
-                                },
+                                onPressed:
+                                    ref.read(provider.notifier).favoriteHandler,
                                 icon: Icon(
-                                  isFav
+                                  playerModel.isFavorite
                                       ? Icons.favorite
                                       : Icons.favorite_border_outlined,
                                   size: 24,
-                                  color: isFav ? colorMain : colorOnBackground,
+                                  color: playerModel.isFavorite
+                                      ? colorMain
+                                      : colorOnBackground,
                                 ),
                               )),
                           Padding(
                               padding: const EdgeInsets.only(left: 12),
                               child: IconButton(
-                                  onPressed: () {
-                                    if (!loopAll.value) {
-                                      audioPlayer.setLoopMode(LoopMode.all);
-                                      loopAll.value = true;
-                                    } else {
-                                      audioPlayer.setLoopMode(LoopMode.one);
-                                      loopAll.value = false;
-                                    }
-                                  },
+                                  onPressed: ref
+                                      .read(provider.notifier)
+                                      .toggleLoopMode,
                                   icon: Icon(
                                     loopAll.value
                                         ? Icons.repeat
@@ -374,7 +270,7 @@ class MusicPlayerState extends ConsumerState<MusicPlayer> {
                   width: MediaQuery.of(context).size.width,
                   child: MouseRegion(
                     onEnter: (event) {
-                      if (currentId.value != null) showThumb.value = true;
+                      if (playerModel.media != null) showThumb.value = true;
                     },
                     onExit: (event) {
                       if (dragEnd) showThumb.value = false;
@@ -386,26 +282,28 @@ class MusicPlayerState extends ConsumerState<MusicPlayer> {
                       thumbColor: showThumb.value ? null : Colors.transparent,
                       thumbGlowRadius: 14,
                       thumbGlowColor:
-                          currentId.value == null ? Colors.transparent : null,
+                          playerModel.media == null ? Colors.transparent : null,
                       thumbCanPaintOutsideBar: true,
-                      buffered: Duration(milliseconds: bufferedSeconds.value),
-                      progress: Duration(milliseconds: currentSeconds.value),
-                      total: Duration(milliseconds: allSeconds.value),
+                      buffered: playerModel.buffered,
+                      progress: playerModel.progress,
+                      total: playerModel.total,
                       onDragStart: (details) {
-                        if (currentId.value == null) return;
+                        if (playerModel.media == null) return;
                         dragEnd = false;
+                        ref.read(provider.notifier).onProgressBarDragStart();
                       },
                       onDragEnd: () {
-                        if (currentId.value == null) {
-                          audioPlayer.seek(const Duration(milliseconds: 0));
-                        }
                         dragEnd = true;
+                        ref.read(provider.notifier).onProgressBarDragEnd();
                       },
-                      onSeek: (duration) {
-                        if (currentId.value == null) {
-                          return;
-                        }
-                        audioPlayer.seek(duration);
+                      onSeek: (value) {
+                        // Log.e("onSeek $value");
+                        // Log.e([
+                        //   playerModel.progress,
+                        //   playerModel.total,
+                        //   playerModel.buffered
+                        // ]);
+                        ref.read(provider.notifier).onProgressBarSeek(value);
                       },
                     ),
                   )),

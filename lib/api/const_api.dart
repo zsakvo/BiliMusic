@@ -82,6 +82,10 @@ class ApiConstants {
   ///test: https://api.bilibili.com/x/web-interface/view?aid=170001
   static const String videoInfo = '$apiBase/x/web-interface/view';
 
+  /// 详细视频信息
+  /// test:https://api.bilibili.com/x/web-interface/view/detail?bvid=BV1Ap4y1S7Gg
+  static const String videoInfoDetail = '$apiBase/x/web-interface/view/detail';
+
   ///视频分p信息
   ///test: https://api.bilibili.com/x/player/pagelist?aid=170001
   static const String videoParts = '$apiBase/x/player/pagelist';

@@ -522,7 +522,7 @@ class Page {
   int? cid;
   int? page;
   From? from;
-  String? pagePart;
+  String? part;
   int? duration;
   String? vid;
   String? weblink;
@@ -533,7 +533,7 @@ class Page {
     this.cid,
     this.page,
     this.from,
-    this.pagePart,
+    this.part,
     this.duration,
     this.vid,
     this.weblink,
@@ -545,7 +545,7 @@ class Page {
     int? cid,
     int? page,
     From? from,
-    String? pagePart,
+    String? part,
     int? duration,
     String? vid,
     String? weblink,
@@ -556,7 +556,7 @@ class Page {
         cid: cid ?? this.cid,
         page: page ?? this.page,
         from: from ?? this.from,
-        pagePart: pagePart ?? this.pagePart,
+        part: part ?? this.part,
         duration: duration ?? this.duration,
         vid: vid ?? this.vid,
         weblink: weblink ?? this.weblink,
@@ -572,7 +572,7 @@ class Page {
         cid: json["cid"],
         page: json["page"],
         from: fromValues.map[json["from"]]!,
-        pagePart: json["part"],
+        part: json["part"],
         duration: json["duration"],
         vid: json["vid"],
         weblink: json["weblink"],
@@ -586,7 +586,7 @@ class Page {
         "cid": cid,
         "page": page,
         "from": fromValues.reverse[from],
-        "part": pagePart,
+        "part": part,
         "duration": duration,
         "vid": vid,
         "weblink": weblink,

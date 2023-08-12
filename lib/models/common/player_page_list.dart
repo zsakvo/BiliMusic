@@ -30,15 +30,18 @@ class PlayerPageListResponse {
         data: data ?? this.data,
       );
 
-  factory PlayerPageListResponse.fromJson(String str) => PlayerPageListResponse.fromMap(json.decode(str));
+  factory PlayerPageListResponse.fromJson(String str) =>
+      PlayerPageListResponse.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory PlayerPageListResponse.fromMap(Map<String, dynamic> json) => PlayerPageListResponse(
+  factory PlayerPageListResponse.fromMap(Map<String, dynamic> json) =>
+      PlayerPageListResponse(
         code: json["code"],
         message: json["message"],
         ttl: json["ttl"],
-        data: List<PlayerPageListItem>.from(json["data"].map((x) => PlayerPageListItem.fromMap(x))),
+        data: List<PlayerPageListItem>.from(
+            json["data"].map((x) => PlayerPageListItem.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
@@ -53,7 +56,7 @@ class PlayerPageListItem {
   int cid;
   int page;
   String from;
-  String datumPart;
+  String part;
   int duration;
   String vid;
   String weblink;
@@ -63,7 +66,7 @@ class PlayerPageListItem {
     required this.cid,
     required this.page,
     required this.from,
-    required this.datumPart,
+    required this.part,
     required this.duration,
     required this.vid,
     required this.weblink,
@@ -74,7 +77,7 @@ class PlayerPageListItem {
     int? cid,
     int? page,
     String? from,
-    String? datumPart,
+    String? part,
     int? duration,
     String? vid,
     String? weblink,
@@ -84,22 +87,24 @@ class PlayerPageListItem {
         cid: cid ?? this.cid,
         page: page ?? this.page,
         from: from ?? this.from,
-        datumPart: datumPart ?? this.datumPart,
+        part: part ?? this.part,
         duration: duration ?? this.duration,
         vid: vid ?? this.vid,
         weblink: weblink ?? this.weblink,
         dimension: dimension ?? this.dimension,
       );
 
-  factory PlayerPageListItem.fromJson(String str) => PlayerPageListItem.fromMap(json.decode(str));
+  factory PlayerPageListItem.fromJson(String str) =>
+      PlayerPageListItem.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory PlayerPageListItem.fromMap(Map<String, dynamic> json) => PlayerPageListItem(
+  factory PlayerPageListItem.fromMap(Map<String, dynamic> json) =>
+      PlayerPageListItem(
         cid: json["cid"],
         page: json["page"],
         from: json["from"],
-        datumPart: json["part"],
+        part: json["part"],
         duration: json["duration"],
         vid: json["vid"],
         weblink: json["weblink"],
@@ -110,7 +115,7 @@ class PlayerPageListItem {
         "cid": cid,
         "page": page,
         "from": from,
-        "part": datumPart,
+        "part": part,
         "duration": duration,
         "vid": vid,
         "weblink": weblink,

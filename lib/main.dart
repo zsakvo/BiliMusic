@@ -5,6 +5,7 @@ import 'package:bilimusic/components/player/provider.dart';
 import 'package:bilimusic/provider.dart';
 import 'package:bilimusic/router.dart';
 import 'package:bilimusic/screen/config/config_screen.dart';
+import 'package:bilimusic/utils/play.dart';
 
 import 'package:bilimusic/utils/server.dart';
 import 'package:chinese_font_library/chinese_font_library.dart';
@@ -47,6 +48,7 @@ void main(List<String> args) async {
     androidNotificationOngoing: true,
   );
   await Ajax().init(container);
+  await Player().init();
   runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
 

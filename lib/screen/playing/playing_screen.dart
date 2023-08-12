@@ -1,13 +1,16 @@
 import 'dart:ui';
 
+import 'package:bilimusic/components/player/player_model.dart';
 import 'package:bilimusic/components/player/provider.dart';
 import 'package:bilimusic/screen/playing/component/lyric_component.dart';
+import 'package:bilimusic/screen/playing/component/related_media.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PlayingScreen extends StatefulHookConsumerWidget {
-  const PlayingScreen({super.key});
+  const PlayingScreen(this.playerModel, {super.key});
+  final PlayerModel playerModel;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _PlayingScreenState();
@@ -16,17 +19,18 @@ class PlayingScreen extends StatefulHookConsumerWidget {
 class _PlayingScreenState extends ConsumerState<PlayingScreen> {
   @override
   Widget build(BuildContext context) {
-    final currentPlaying = ref.watch(currentPlayingRes);
+    // final currentPlaying = ref.watch(currentPlayingRes);
     final computedHeight = MediaQuery.of(context).size.height - 80;
+    final currentMedia = widget.playerModel.media;
     return Material(
-        child: currentPlaying != null
+        child: currentMedia != null
             ? Stack(
                 children: [
                   Container(
                     constraints: const BoxConstraints.expand(
                         width: double.infinity, height: double.infinity),
                     child: CachedNetworkImage(
-                      imageUrl: currentPlaying.cover,
+                      imageUrl: currentMedia.cover,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -38,9 +42,9 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
                   BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 32, sigmaY: 32),
                       child: Container(
-                        height: computedHeight * 0.60,
+                        height: computedHeight * 0.8,
                         margin: EdgeInsets.only(
-                          top: computedHeight * 0.20,
+                          top: computedHeight * 0.1,
                         ),
                         child: Row(
                           children: [
@@ -48,7 +52,7 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
                               flex: 2,
                             ),
                             Expanded(
-                              flex: 5,
+                              flex: 10,
                               child: LayoutBuilder(
                                 builder: (context, constraints) {
                                   return Padding(
@@ -56,56 +60,52 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
                                         vertical: 14),
                                     child: Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        Expanded(
-                                            child: CachedNetworkImage(
-                                          imageUrl: currentPlaying.cover,
+                                        CachedNetworkImage(
+                                          imageUrl: currentMedia.cover,
                                           fit: BoxFit.cover,
-                                        )),
+                                          height: constraints.maxHeight * 0.4,
+                                        ),
                                         Padding(
                                           padding:
-                                              const EdgeInsets.only(top: 36),
-                                          child: Text(
-                                            currentPlaying.title.trim(),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium
-                                                ?.copyWith(color: Colors.white),
+                                              const EdgeInsets.only(top: 64),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                currentMedia.title.trim(),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleMedium
+                                                    ?.copyWith(
+                                                        color: Colors.white),
+                                              ),
+                                              SizedBox(
+                                                width: 14,
+                                              ),
+                                              Text(currentMedia.author,
+                                                  style: const TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.white70)),
+                                            ],
                                           ),
                                         ),
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(top: 16),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              RichText(
-                                                  text: TextSpan(children: [
-                                                TextSpan(
-                                                    text: currentPlaying.artist,
-                                                    style: const TextStyle(
-                                                        fontSize: 13,
-                                                        color: Colors.white70)),
-                                                const TextSpan(
-                                                    text: "\t\t/\t\t",
-                                                    style: TextStyle(
-                                                        fontSize: 13,
-                                                        color: Colors.white70)),
-                                                TextSpan(
-                                                    text:
-                                                        (currentPlaying.resId),
-                                                    style: const TextStyle(
-                                                        fontSize: 13,
-                                                        color: Colors.white70)),
-                                              ])),
-                                            ],
-                                          ),
+                                          child: Text((currentMedia.introLine),
+                                              maxLines: 4,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                  height: 1.6,
+                                                  fontSize: 13,
+                                                  color: Colors.white70)),
                                         ),
                                         // Padding(
                                         //   padding: const EdgeInsets.only(
@@ -193,15 +193,18 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
                               flex: 1,
                             ),
                             Expanded(
-                              flex: 5,
+                              flex: 10,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
-                                      height: computedHeight * 0.60,
+                                      height: computedHeight * 0.80,
                                       color: Colors.transparent,
-                                      child: const LyricComponent())
+                                      child:
+                                          // const LyricComponent()
+                                          RelatedScreen(
+                                              widget.playerModel.media!.id))
                                 ],
                               ),
                             ),

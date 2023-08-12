@@ -1,6 +1,7 @@
 import 'package:bilimusic/api/ajax.dart';
 import 'package:bilimusic/api/const_api.dart';
 import 'package:bilimusic/models/common/player_page_list.dart';
+import 'package:bilimusic/models/common/related_video.dart';
 import 'package:bilimusic/models/common/subtitle.dart';
 import 'package:bilimusic/models/common/video_info.dart';
 
@@ -18,14 +19,18 @@ class CommonApi {
     return PlayerPageListResponse.fromMap(response.data).data;
   }
 
-  static Future<VideoInfoResponseData?> getVideoInfo(
+  static Future<VideoInfoResponseData> getVideoInfo(
       {dynamic aid, String? bvid}) async {
-    if (aid == null && bvid == null) {
-      return null;
-    }
     var response = await Ajax().get(ApiConstants.videoInfo,
         queryParameters: {"aid": aid, "bvid": bvid}, needSign: true);
-    return VideoInfoResponse.fromMap(response.data).data;
+    return VideoInfoResponse.fromMap(response.data).data!;
+  }
+
+  static Future<List<Datum>> getRelatedVideos(
+      {dynamic aid, String? bvid}) async {
+    var response = await Ajax().get(ApiConstants.relatedVideo,
+        queryParameters: {"aid": aid, "bvid": bvid}, needSign: true);
+    return RelatedVideoResponse.fromMap(response.data).data;
   }
 
   static Future<List<Body>> getLyric(String url) async {

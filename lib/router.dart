@@ -4,6 +4,7 @@ import 'package:bilimusic/screen/home/discover_screen.dart';
 import 'package:bilimusic/screen/home/fav_video.dart';
 import 'package:bilimusic/screen/local_fav/local_fav_screen.dart';
 import 'package:bilimusic/screen/login/login_screen.dart';
+import 'package:bilimusic/screen/play_list/play_list_screen.dart';
 import 'package:bilimusic/screen/search/search_screen.dart';
 import 'package:bilimusic/screen/user/user_screen.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +63,18 @@ final router = GoRouter(
                           builder: (context, state) {
                             final id = state.pathParameters['id']!;
                             return FavVideo(
+                              id,
+                              key: GlobalObjectKey(id),
+                            );
+                          },
+                        ),
+                        GoRoute(
+                          path: 'play_list/:type/:id',
+                          builder: (context, state) {
+                            final type = state.pathParameters['type']!;
+                            final id = int.parse(state.pathParameters['id']!);
+                            return PlayListScreen(
+                              type,
                               id,
                               key: GlobalObjectKey(id),
                             );
