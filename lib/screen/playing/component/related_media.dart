@@ -19,7 +19,7 @@ class _RelatedScreenState extends ConsumerState<RelatedScreen> {
     final relatedVideos = ref.watch(relatedVideosProvider(widget.id));
     return LayoutBuilder(
       builder: (context, constraints) {
-        return Container(
+        return SizedBox(
             height: constraints.maxHeight,
             width: constraints.maxWidth,
             child: Column(
@@ -72,7 +72,7 @@ class _RelatedScreenState extends ConsumerState<RelatedScreen> {
                     child: Text(error.toString()),
                   );
                 }, loading: () {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }))

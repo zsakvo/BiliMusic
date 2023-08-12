@@ -287,13 +287,14 @@ abstract class _PlayListModel extends PlayListModel {
 
 /// @nodoc
 mixin _$PlayMedia {
-  int get id => throw _privateConstructorUsedError;
-  String get cid => throw _privateConstructorUsedError;
+  int get aid => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get author => throw _privateConstructorUsedError;
   String get cover => throw _privateConstructorUsedError;
   int get duration => throw _privateConstructorUsedError;
   String get intro => throw _privateConstructorUsedError;
+  String? get cid => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $PlayMediaCopyWith<PlayMedia> get copyWith =>
@@ -306,13 +307,14 @@ abstract class $PlayMediaCopyWith<$Res> {
       _$PlayMediaCopyWithImpl<$Res, PlayMedia>;
   @useResult
   $Res call(
-      {int id,
-      String cid,
+      {int aid,
       String title,
       String author,
       String cover,
       int duration,
-      String intro});
+      String intro,
+      String? cid,
+      int id});
 }
 
 /// @nodoc
@@ -328,23 +330,20 @@ class _$PlayMediaCopyWithImpl<$Res, $Val extends PlayMedia>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? cid = null,
+    Object? aid = null,
     Object? title = null,
     Object? author = null,
     Object? cover = null,
     Object? duration = null,
     Object? intro = null,
+    Object? cid = freezed,
+    Object? id = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      aid: null == aid
+          ? _value.aid
+          : aid // ignore: cast_nullable_to_non_nullable
               as int,
-      cid: null == cid
-          ? _value.cid
-          : cid // ignore: cast_nullable_to_non_nullable
-              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -365,6 +364,14 @@ class _$PlayMediaCopyWithImpl<$Res, $Val extends PlayMedia>
           ? _value.intro
           : intro // ignore: cast_nullable_to_non_nullable
               as String,
+      cid: freezed == cid
+          ? _value.cid
+          : cid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -377,13 +384,14 @@ abstract class _$$_PlayMediaCopyWith<$Res> implements $PlayMediaCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int id,
-      String cid,
+      {int aid,
       String title,
       String author,
       String cover,
       int duration,
-      String intro});
+      String intro,
+      String? cid,
+      int id});
 }
 
 /// @nodoc
@@ -397,23 +405,20 @@ class __$$_PlayMediaCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? cid = null,
+    Object? aid = null,
     Object? title = null,
     Object? author = null,
     Object? cover = null,
     Object? duration = null,
     Object? intro = null,
+    Object? cid = freezed,
+    Object? id = null,
   }) {
     return _then(_$_PlayMedia(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      aid: null == aid
+          ? _value.aid
+          : aid // ignore: cast_nullable_to_non_nullable
               as int,
-      cid: null == cid
-          ? _value.cid
-          : cid // ignore: cast_nullable_to_non_nullable
-              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -434,6 +439,14 @@ class __$$_PlayMediaCopyWithImpl<$Res>
           ? _value.intro
           : intro // ignore: cast_nullable_to_non_nullable
               as String,
+      cid: freezed == cid
+          ? _value.cid
+          : cid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -442,19 +455,18 @@ class __$$_PlayMediaCopyWithImpl<$Res>
 
 class _$_PlayMedia extends _PlayMedia {
   const _$_PlayMedia(
-      {required this.id,
-      required this.cid,
+      {required this.aid,
       required this.title,
       required this.author,
       required this.cover,
       required this.duration,
-      required this.intro})
+      required this.intro,
+      this.cid,
+      this.id = Isar.autoIncrement})
       : super._();
 
   @override
-  final int id;
-  @override
-  final String cid;
+  final int aid;
   @override
   final String title;
   @override
@@ -465,10 +477,15 @@ class _$_PlayMedia extends _PlayMedia {
   final int duration;
   @override
   final String intro;
+  @override
+  final String? cid;
+  @override
+  @JsonKey()
+  final int id;
 
   @override
   String toString() {
-    return 'PlayMedia(id: $id, cid: $cid, title: $title, author: $author, cover: $cover, duration: $duration, intro: $intro)';
+    return 'PlayMedia(aid: $aid, title: $title, author: $author, cover: $cover, duration: $duration, intro: $intro, cid: $cid, id: $id)';
   }
 
   @override
@@ -476,19 +493,20 @@ class _$_PlayMedia extends _PlayMedia {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_PlayMedia &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.cid, cid) || other.cid == cid) &&
+            (identical(other.aid, aid) || other.aid == aid) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.author, author) || other.author == author) &&
             (identical(other.cover, cover) || other.cover == cover) &&
             (identical(other.duration, duration) ||
                 other.duration == duration) &&
-            (identical(other.intro, intro) || other.intro == intro));
+            (identical(other.intro, intro) || other.intro == intro) &&
+            (identical(other.cid, cid) || other.cid == cid) &&
+            (identical(other.id, id) || other.id == id));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, cid, title, author, cover, duration, intro);
+  int get hashCode => Object.hash(
+      runtimeType, aid, title, author, cover, duration, intro, cid, id);
 
   @JsonKey(ignore: true)
   @override
@@ -499,19 +517,18 @@ class _$_PlayMedia extends _PlayMedia {
 
 abstract class _PlayMedia extends PlayMedia {
   const factory _PlayMedia(
-      {required final int id,
-      required final String cid,
+      {required final int aid,
       required final String title,
       required final String author,
       required final String cover,
       required final int duration,
-      required final String intro}) = _$_PlayMedia;
+      required final String intro,
+      final String? cid,
+      final int id}) = _$_PlayMedia;
   const _PlayMedia._() : super._();
 
   @override
-  int get id;
-  @override
-  String get cid;
+  int get aid;
   @override
   String get title;
   @override
@@ -522,6 +539,10 @@ abstract class _PlayMedia extends PlayMedia {
   int get duration;
   @override
   String get intro;
+  @override
+  String? get cid;
+  @override
+  int get id;
   @override
   @JsonKey(ignore: true)
   _$$_PlayMediaCopyWith<_$_PlayMedia> get copyWith =>

@@ -113,7 +113,7 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
                             ref.read(topbarStateProvider.notifier).pushState(
                                 TopBarState(showBack: true, title: item.title));
                             // context.push("/browser/collect", extra: item.id);
-                            context.go("/browser/collect", extra: item.id);
+                            context.go("/browser/play_list/folders/${item.id}");
                           },
                         ))
                     .toList()),

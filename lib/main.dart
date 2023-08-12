@@ -5,6 +5,7 @@ import 'package:bilimusic/components/player/provider.dart';
 import 'package:bilimusic/provider.dart';
 import 'package:bilimusic/router.dart';
 import 'package:bilimusic/screen/config/config_screen.dart';
+import 'package:bilimusic/screen/play_list/play_list_model.dart';
 import 'package:bilimusic/utils/play.dart';
 
 import 'package:bilimusic/utils/server.dart';
@@ -37,7 +38,7 @@ void main(List<String> args) async {
   final container = ProviderContainer();
   final dir = await getApplicationDocumentsDirectory();
   Isar.openSync(
-    [PlayResSchema],
+    [PlayResSchema, PlayMediaSchema],
     directory: dir.path,
   );
 

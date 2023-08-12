@@ -1,8 +1,5 @@
 import 'package:bilimusic/screen/config/config_screen.dart';
-import 'package:bilimusic/screen/home/collect_video.dart';
 import 'package:bilimusic/screen/home/discover_screen.dart';
-import 'package:bilimusic/screen/home/fav_video.dart';
-import 'package:bilimusic/screen/local_fav/local_fav_screen.dart';
 import 'package:bilimusic/screen/login/login_screen.dart';
 import 'package:bilimusic/screen/play_list/play_list_screen.dart';
 import 'package:bilimusic/screen/search/search_screen.dart';
@@ -31,23 +28,23 @@ final router = GoRouter(
                       path: "/browser",
                       builder: (context, state) => const DiscoverScreen(),
                       routes: [
-                        GoRoute(
-                          path: 'collect',
-                          builder: (context, state) {
-                            int id = state.extra as int;
-                            return CollectVideo(
-                              id,
-                            );
-                          },
-                        ),
+                        // GoRoute(
+                        //   path: 'collect',
+                        //   builder: (context, state) {
+                        //     int id = state.extra as int;
+                        //     return CollectVideo(
+                        //       id,
+                        //     );
+                        //   },
+                        // ),
                         // GoRoute(
                         //   path: 'discover',
                         //   builder: (context, state) => const DiscoverScreen(),
                         // ),
-                        GoRoute(
-                          path: 'local_fav',
-                          builder: (context, state) => const LocalFavScreen(),
-                        ),
+                        // GoRoute(
+                        //   path: 'local_fav',
+                        //   builder: (context, state) => const LocalFavScreen(),
+                        // ),
                         GoRoute(
                           path: 'search/:keyword',
                           builder: (context, state) {
@@ -58,16 +55,16 @@ final router = GoRouter(
                             );
                           },
                         ),
-                        GoRoute(
-                          path: 'favorite/:id',
-                          builder: (context, state) {
-                            final id = state.pathParameters['id']!;
-                            return FavVideo(
-                              id,
-                              key: GlobalObjectKey(id),
-                            );
-                          },
-                        ),
+                        // GoRoute(
+                        //   path: 'favorite/:id',
+                        //   builder: (context, state) {
+                        //     final id = state.pathParameters['id']!;
+                        //     return FavVideo(
+                        //       id,
+                        //       key: GlobalObjectKey(id),
+                        //     );
+                        //   },
+                        // ),
                         GoRoute(
                           path: 'play_list/:type/:id',
                           builder: (context, state) {

@@ -265,13 +265,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                         selectedPageIndex.value = value;
                                         if (value >= 2) {
                                           drawerGo(context,
-                                              "/browser/favorite/${folders.data![value - 2].id}");
+                                              "/browser/play_list/favorites/${folders.data![value - 2].id}");
                                         } else {
                                           if (value == 0) {
                                             drawerGo(context, "/browser");
                                           } else if (value == 1) {
-                                            drawerGo(
-                                                context, "/browser/local_fav");
+                                            drawerGo(context,
+                                                "/browser/play_list/local/0");
                                           }
                                         }
                                       },
@@ -319,19 +319,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                       IconData(0xe75a,
                                                           fontFamily: 'Icon')),
                                                 )),
-                                        TextButton(
-                                            onPressed: () {
-                                              ref
-                                                  .read(topbarStateProvider
-                                                      .notifier)
-                                                  .pushState(TopBarState(
-                                                      showBack: true,
-                                                      title: 'cids'));
+                                        // TextButton(
+                                        //     onPressed: () {
+                                        //       ref
+                                        //           .read(topbarStateProvider
+                                        //               .notifier)
+                                        //           .pushState(TopBarState(
+                                        //               showBack: true,
+                                        //               title: 'cids'));
 
-                                              context.go(
-                                                  "/browser/play_list/cids/438506141");
-                                            },
-                                            child: const Text("测试")),
+                                        //       context.go(
+                                        //           "/browser/play_list/cids/438506141");
+                                        //     },
+                                        //     child: const Text("测试")),
                                         SizedBox.fromSize(
                                           size: const Size(0, 46),
                                         )

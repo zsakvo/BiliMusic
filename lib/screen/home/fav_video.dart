@@ -52,7 +52,7 @@ class _FavVideoState extends ConsumerState<FavVideo> {
     }, [videos.value, folderDetail.data]);
     useEffect(() {
       FavApi.getFavRescList(widget.id, ps: ps, pn: pn.value).then((res) {
-        videos.value = [...videos.value, ...res];
+        videos.value = [...videos.value, ...res.medias];
       });
       return () => {};
     }, [pn.value]);
