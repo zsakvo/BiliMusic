@@ -4,6 +4,8 @@ import 'package:bilimusic/components/player/provider.dart';
 import 'package:bilimusic/models/search/search_video.dart' as sv show Result;
 import 'package:bilimusic/models/search/search_user.dart' as su show Result;
 import 'package:bilimusic/provider.dart';
+import 'package:bilimusic/screen/play_list/play_list_model.dart';
+import 'package:bilimusic/utils/play.dart';
 import 'package:bilimusic/utils/player.dart';
 import 'package:bilimusic/utils/string.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -198,18 +200,29 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
                       child: tabIndex.value == 0
                           ? InkWell(
                               onTap: () {
-                                PlayerUtils.playRes(
-                                    player,
-                                    ref,
-                                    PlayRes(
-                                        type: ResType.video,
-                                        title: titleStrMaps
-                                            .map((e) => e["content"])
-                                            .join(""),
-                                        artist: res.author,
-                                        cover: "https:${res.pic}",
-                                        aid: res.id),
-                                    append: false);
+                                res as sv.Result;
+                                Player().play([
+                                  PlayMedia(
+                                      aid: res.aid,
+                                      cid: null,
+                                      title: res.title,
+                                      author: res.author,
+                                      cover: "https:${res.pic}",
+                                      duration: 200,
+                                      intro: res.desc)
+                                ]);
+                                // PlayerUtils.playRes(
+                                //     player,
+                                //     ref,
+                                //     PlayRes(
+                                //         type: ResType.video,
+                                //         title: titleStrMaps
+                                //             .map((e) => e["content"])
+                                //             .join(""),
+                                //         artist: res.author,
+                                //         cover: "https:${res.pic}",
+                                //         aid: res.id),
+                                //     append: false);
                               },
                               child: Row(
                                 children: [
