@@ -24,13 +24,13 @@ class _PlayListMobileScreenState extends ConsumerState<PlayListMobileScreen> {
     final scrollController = useScrollController(keepScrollOffset: true);
     final provider = playListProvider((widget.type, widget.id));
     final asyncPlayListModel = ref.watch(provider);
-    final toolBarTransparenct = useState(true);
+    final toolBarCollapsed = useState(false);
     useEffect(() {
       scrollEvent() {
         if (scrollController.offset > 40) {
-          toolBarTransparenct.value = false;
+          toolBarCollapsed.value = true;
         } else {
-          toolBarTransparenct.value = true;
+          toolBarCollapsed.value = false;
         }
       }
 
@@ -41,195 +41,115 @@ class _PlayListMobileScreenState extends ConsumerState<PlayListMobileScreen> {
       };
     }, []);
     return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          title: toolBarTransparenct.value ? null : Text(widget.title),
-          foregroundColor: Colors.white,
-          backgroundColor: toolBarTransparenct.value
-              ? Colors.transparent
-              : Colors.black.withOpacity(0.6),
-          titleSpacing: 0,
-        ),
         body: asyncPlayListModel.when(
-          data: (data) {
-            return CustomScrollView(
-              controller: scrollController,
-              slivers: [
-                SliverToBoxAdapter(
-                    child: SizedBox(
-                  height: 260,
-                  child: Stack(
-                    children: [
-                      Container(
-                        constraints: const BoxConstraints.expand(
-                            width: double.infinity, height: double.infinity),
-                        child: CachedNetworkImage(
-                          imageUrl: data.cover,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Container(
-                        constraints: const BoxConstraints.expand(
-                            width: double.infinity, height: 260),
-                        color: Colors.black.withOpacity(0.42),
-                      ),
-                      ClipRRect(
-                        child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
-                            child: Container(
-                              height: 260,
-                            )),
-                      ),
-                      Positioned(
-                        top: MediaQuery.of(context).padding.top + 72,
-                        left: 16,
-                        child: Column(
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(6),
-                                  child: CachedNetworkImage(
-                                    imageUrl: data.cover,
-                                    width: 120,
-                                    height: 120,
-                                    fit: BoxFit.cover,
-                                  ),
+      data: (data) {
+        return CustomScrollView(
+          controller: scrollController,
+          slivers: [
+            SliverAppBar.large(
+              title: Text(widget.title),
+              flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: false,
+                  expandedTitleScale: 1.0,
+                  titlePadding: EdgeInsets.only(
+                      left: toolBarCollapsed.value ? 56 : 20, bottom: 12),
+                  title: SizedBox(
+                    height: toolBarCollapsed.value ? 36 : 60,
+                    child: toolBarCollapsed.value
+                        ? Text(
+                            widget.title,
+                            style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onBackground),
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 6),
+                                child: Text(
+                                  widget.title,
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground),
                                 ),
-                                SizedBox(
-                                  height: 110,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 20),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          data.title,
-                                          style: const TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.white),
-                                        ),
-                                        Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 10),
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.person_2,
-                                                  color: Colors.white
-                                                      .withOpacity(0.8),
-                                                ),
-                                                const SizedBox(
-                                                  width: 8,
-                                                ),
-                                                Text(
-                                                  data.author,
-                                                  style: TextStyle(
-                                                      fontSize: 13,
-                                                      color: Colors.white
-                                                          .withOpacity(0.8)),
-                                                ),
-                                              ],
-                                            )),
-                                        Expanded(
-                                            child: Align(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text(
-                                            "共 ${data.mediaCount} 个媒体文件",
-                                            style: TextStyle(
-                                                fontSize: 13,
-                                                color: Colors.white
-                                                    .withOpacity(0.6)),
-                                          ),
-                                        ))
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        left: 0,
-                        bottom: 0,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 20,
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                              borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(50),
-                                  topRight: Radius.circular(50))),
-                        ),
-                      )
-                    ],
+                              ),
+                              Text(
+                                'UP：${data.author}\t,\t共${data.medias.length}个媒体',
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground
+                                        .withOpacity(0.5)),
+                              )
+                            ],
+                          ),
+                  )),
+            ),
+            SliverList.builder(
+              itemBuilder: (context, index) {
+                final media = data.medias[index];
+                return ListTile(
+                  title: Text(
+                    media.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 15),
                   ),
-                )),
-                SliverList.builder(
-                  itemBuilder: (context, index) {
-                    final media = data.medias[index];
-                    return ListTile(
-                      title: Text(
-                        media.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                      leading: Text(
-                        index.toString(),
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onBackground
-                                .withOpacity(0.5)),
-                      ),
-                      minLeadingWidth: 12,
-                      subtitle: Text(media.author,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onBackground
-                                  .withOpacity(0.5))),
-                      trailing: IconButton(
-                        icon: Icon(
-                          Icons.more_vert,
-                          size: 20,
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: CachedNetworkImage(
+                      imageUrl: media.cover,
+                      width: 48,
+                      height: 48,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  minLeadingWidth: 12,
+                  subtitle: Text("${media.author}\t\t\t${media.durationText}",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: 12,
                           color: Theme.of(context)
                               .colorScheme
                               .onBackground
-                              .withOpacity(0.5),
-                        ),
-                        onPressed: () {},
-                      ),
-                      contentPadding: const EdgeInsets.only(
-                          left: 20, top: 2, bottom: 2, right: 0),
-                      dense: true,
-                      visualDensity: VisualDensity.compact,
-                      onTap: () {
-                        ref.read(provider.notifier).playMedia(index);
-                      },
-                    );
+                              .withOpacity(0.5))),
+                  trailing: IconButton(
+                    icon: Icon(
+                      Icons.more_vert,
+                      size: 20,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onBackground
+                          .withOpacity(0.5),
+                    ),
+                    onPressed: () {},
+                  ),
+                  contentPadding: const EdgeInsets.only(
+                      left: 20, top: 2, bottom: 2, right: 0),
+                  dense: true,
+                  // visualDensity: VisualDensity.compact,
+                  onTap: () {
+                    ref.read(provider.notifier).playMedia(index);
                   },
-                  itemCount: data.medias.length,
-                )
-              ],
-            );
-          },
-          loading: () => const Center(
-            child: CircularProgressIndicator(),
-          ),
-          error: (err, stack) {
-            Log.e(stack, err.toString());
-            return Text('Error: $err');
-          },
-        ));
+                );
+              },
+              itemCount: data.medias.length,
+            )
+          ],
+        );
+      },
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      error: (err, stack) {
+        Log.e(stack, err.toString());
+        return Text('Error: $err');
+      },
+    ));
   }
 }

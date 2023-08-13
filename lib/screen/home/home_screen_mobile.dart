@@ -3,6 +3,7 @@ import 'package:bilimusic/screen/home/components/my_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class HomeMobileScreen extends StatefulHookConsumerWidget {
@@ -31,7 +32,9 @@ class _HomeMobileScreenState extends ConsumerState<HomeMobileScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.push("/search");
+            },
             icon: SvgPicture.asset(
               "assets/svg/search.svg",
               width: 22,

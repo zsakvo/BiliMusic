@@ -6,6 +6,8 @@ import 'package:bilimusic/screen/home/home_screen.dart';
 import 'package:bilimusic/screen/home/home_screen_mobile.dart';
 import 'package:bilimusic/screen/login/login_screen.dart';
 import 'package:bilimusic/screen/play_list/play_list_screen.dart';
+import 'package:bilimusic/screen/search/search_mobile_page_screen.dart';
+import 'package:bilimusic/screen/search/search_mobile_screen.dart';
 import 'package:bilimusic/screen/search/search_screen.dart';
 import 'package:bilimusic/screen/user/user_screen.dart';
 import 'package:flutter/material.dart';
@@ -101,6 +103,15 @@ final desktopRouter = GoRouter(
 final mobileRouter = GoRouter(initialLocation: "/", routes: [
   GoRoute(path: "/", builder: (context, state) => const HomeMobileScreen()),
   GoRoute(path: "/login", builder: (context, state) => const LoginScreen()),
+  GoRoute(
+      path: "/search",
+      builder: (context, state) => const SearchMobilePageScreen()),
+  GoRoute(
+      path: "/search_result/:keyword",
+      builder: (context, state) {
+        final keyword = state.pathParameters['keyword']!;
+        return SearchMobileScreen(keyword);
+      }),
   GoRoute(
     path: '/play_list/:type/:id/:title',
     builder: (context, state) {
