@@ -147,15 +147,15 @@ flutter:
     - family: Icon
       fonts:
         - asset: assets/font/icon/iconfont.ttf
-    - family: Harmony
-      fonts:
-        - asset: assets/font/harmony/Condensed_Regular_Italic.ttf
-        - asset: assets/font/harmony/Condensed_Regular.ttf
-        - asset: assets/font/harmony/Naskh_Arabic_UI_Regular.ttf
-        - asset: assets/font/harmony/Regular_Italic.ttf
-        - asset: assets/font/harmony/Regular.ttf
-        - asset: assets/font/harmony/SC_Regular.ttf
-        - asset: assets/font/harmony/TC_Regular.ttf
+    # - family: Harmony
+    #   fonts:
+    #     - asset: assets/font/harmony/Condensed_Regular_Italic.ttf
+    #     - asset: assets/font/harmony/Condensed_Regular.ttf
+    #     - asset: assets/font/harmony/Naskh_Arabic_UI_Regular.ttf
+    #     - asset: assets/font/harmony/Regular_Italic.ttf
+    #     - asset: assets/font/harmony/Regular.ttf
+    #     - asset: assets/font/harmony/SC_Regular.ttf
+    #     - asset: assets/font/harmony/TC_Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
