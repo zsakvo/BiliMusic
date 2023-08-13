@@ -2,6 +2,7 @@ import 'package:bilimusic/api/search_api.dart';
 import 'package:bilimusic/models/search/search_video.dart';
 import 'package:bilimusic/screen/play_list/play_list_model.dart';
 import 'package:bilimusic/utils/play.dart';
+import 'package:bilimusic/utils/string.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
@@ -110,12 +111,30 @@ class _SearchMobileScreenState extends ConsumerState<SearchMobileScreen>
               child: ListView.builder(
                 itemBuilder: (context, index) {
                   final Result item = searchItems.value[index];
+                  final titleStrMaps = tabController.index == 0
+                      ? StringFormatUtils.splitStringWithEmTags(item.title)
+                      : [];
                   return ListTile(
-                    title: Text(
-                      item.title,
+                    title: RichText(
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 15),
+                      text: TextSpan(
+                          children: titleStrMaps
+                              .map((title) => TextSpan(
+                                  text: title["content"],
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16,
+                                      color: title["isKey"]
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                              .withOpacity(0.7)
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .onBackground
+                                              .withOpacity(0.7))))
+                              .toList()),
                     ),
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(6),
@@ -156,7 +175,9 @@ class _SearchMobileScreenState extends ConsumerState<SearchMobileScreen>
                       Player().play([
                         PlayMedia(
                           intro: "av${item.id}",
-                          title: item.title,
+                          title: titleStrMaps
+                              .map((title) => title["content"])
+                              .join(""),
                           author: item.author,
                           cover: "https:${item.pic}",
                           aid: item.id,

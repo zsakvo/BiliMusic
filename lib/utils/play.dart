@@ -43,6 +43,7 @@ class Player {
                   "http://127.0.0.1:43374/v.m4a?aid=${video.aid}&cid=${video.cid}"),
               tag: video.mediaItem),
       ];
+      await _source.clear();
       await _source.addAll(audioSourceList);
       _player.seek(Duration.zero, index: index);
       // _player.seek(Duration.zero, index: index);
