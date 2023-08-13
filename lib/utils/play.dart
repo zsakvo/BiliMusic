@@ -44,6 +44,7 @@ class Player {
               tag: video.mediaItem),
       ];
       await _source.addAll(audioSourceList);
+      _player.seek(Duration.zero, index: index);
       // _player.seek(Duration.zero, index: index);
       _player.play();
     } else {

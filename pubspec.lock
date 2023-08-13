@@ -394,6 +394,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
+  easy_refresh:
+    dependency: "direct main"
+    description:
+      name: easy_refresh
+      sha256: "77b025ea49f27b5ebc5eef40a6678be52564c293bd97ce91a4088d6646478329"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.2+1"
   el_tooltip:
     dependency: "direct main"
     description:
@@ -471,6 +479,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.18.6"
+  flutter_inappwebview:
+    dependency: "direct main"
+    description:
+      name: flutter_inappwebview
+      sha256: fad1f2740ff4b5b7da378a639f54beeb9d787b6339c89a9de00494d92372c0bb
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.0-beta.24+1"
+  flutter_inappwebview_internal_annotations:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview_internal_annotations
+      sha256: "064a8ccbc76217dcd3b0fd6c6ea6f549e69b2849a0233b5bb46af9632c3ce2ff"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -847,6 +871,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.3"
+  path_drawing:
+    dependency: transitive
+    description:
+      name: path_drawing
+      sha256: bbb1934c0cbb03091af082a6389ca2080345291ef07a5fa6d6e078ba8682f977
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   path_parsing:
     dependency: transitive
     description:
@@ -1388,38 +1420,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.0"
-  webview_flutter:
-    dependency: "direct main"
-    description:
-      name: webview_flutter
-      sha256: "789d52bd789373cc1e100fb634af2127e86c99cf9abde09499743270c5de8d00"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.2.2"
-  webview_flutter_android:
-    dependency: transitive
-    description:
-      name: webview_flutter_android
-      sha256: d936a09fbfd08cb78f7329e0bbacf6158fbdfe24ffc908b22444c07d295eb193
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.9.2"
-  webview_flutter_platform_interface:
-    dependency: transitive
-    description:
-      name: webview_flutter_platform_interface
-      sha256: "564ef378cafc1a0e29f1d76ce175ef517a0a6115875dff7b43fccbef2b0aeb30"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.4.0"
-  webview_flutter_wkwebview:
-    dependency: transitive
-    description:
-      name: webview_flutter_wkwebview
-      sha256: "5fa098f28b606f699e8ca52d9e4e11edbbfef65189f5f77ae92703ba5408fd25"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.7.2"
   win32:
     dependency: transitive
     description:

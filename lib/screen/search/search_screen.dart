@@ -47,7 +47,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
 
   @override
   Widget build(BuildContext context) {
-    final player = ref.watch(playerProvider);
     final currentFilter = useState(0);
     final tabController = useTabController(initialLength: 2, vsync: this);
     final tabIndex = useState(0);

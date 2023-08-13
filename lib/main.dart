@@ -6,13 +6,16 @@ import 'package:bilimusic/provider.dart';
 import 'package:bilimusic/router.dart';
 import 'package:bilimusic/screen/config/config_screen.dart';
 import 'package:bilimusic/screen/play_list/play_list_model.dart';
+import 'package:bilimusic/utils/log.dart';
 import 'package:bilimusic/utils/play.dart';
 
 import 'package:bilimusic/utils/server.dart';
 import 'package:chinese_font_library/chinese_font_library.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:desktop_webview_window/desktop_webview_window.dart';
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -32,8 +35,23 @@ void main(List<String> args) async {
   spInstance = await SharedPreferences.getInstance();
   var cookiePath = "${(await getApplicationSupportDirectory()).path}/.cookies/";
   cookieJar = PersistCookieJar(storage: FileStorage(cookiePath));
+
   if (Platform.isMacOS) {
     await YaruWindow.ensureInitialized();
+  }
+  // 如果是移动端，顶栏和底栏透明处理
+  if (Platform.isAndroid || Platform.isIOS) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [
+      SystemUiOverlay.top,
+    ]);
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarDividerColor: Colors.transparent,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
   }
   final container = ProviderContainer();
   final dir = await getApplicationDocumentsDirectory();
@@ -50,6 +68,7 @@ void main(List<String> args) async {
   );
   await Ajax().init(container);
   await Player().init();
+  EasyRefresh.defaultHeaderBuilder = () => const MaterialHeader();
   runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
 

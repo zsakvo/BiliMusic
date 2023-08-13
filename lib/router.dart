@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:bilimusic/screen/config/config_screen.dart';
 import 'package:bilimusic/screen/home/discover_screen.dart';
+import 'package:bilimusic/screen/home/home_screen.dart';
+import 'package:bilimusic/screen/home/home_screen_mobile.dart';
 import 'package:bilimusic/screen/login/login_screen.dart';
 import 'package:bilimusic/screen/play_list/play_list_screen.dart';
 import 'package:bilimusic/screen/search/search_screen.dart';
@@ -7,12 +11,10 @@ import 'package:bilimusic/screen/user/user_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'screen/home/home_screen.dart';
-
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _browserNavigatorKey = GlobalKey<NavigatorState>();
 
-final router = GoRouter(
+final desktopRouter = GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/browser',
     routes: <RouteBase>[
@@ -95,3 +97,26 @@ final router = GoRouter(
           ]),
       GoRoute(path: "/login", builder: (context, state) => const LoginScreen()),
     ]);
+
+final mobileRouter = GoRouter(initialLocation: "/", routes: [
+  GoRoute(path: "/", builder: (context, state) => const HomeMobileScreen()),
+  GoRoute(path: "/login", builder: (context, state) => const LoginScreen()),
+  GoRoute(
+    path: '/play_list/:type/:id/:title',
+    builder: (context, state) {
+      final type = state.pathParameters['type']!;
+      final id = int.parse(state.pathParameters['id']!);
+      final title = state.pathParameters['title'];
+      return PlayListScreen(
+        type,
+        id,
+        title: title,
+        key: GlobalObjectKey(id),
+      );
+    },
+  ),
+]);
+
+final router = (Platform.isLinux || Platform.isMacOS || Platform.isWindows)
+    ? desktopRouter
+    : mobileRouter;

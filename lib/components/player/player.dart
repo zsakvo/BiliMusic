@@ -3,7 +3,7 @@ import 'package:bilimusic/components/player/player_proivder.dart';
 import 'package:bilimusic/components/player/provider.dart';
 import 'package:bilimusic/provider.dart';
 import 'package:bilimusic/screen/config/config_screen.dart';
-import 'package:bilimusic/screen/home/home_screen.dart';
+import 'package:bilimusic/screen/home/home_screen_desktop.dart';
 import 'package:bilimusic/screen/playing/playing_screen.dart';
 import 'package:bilimusic/utils/play.dart';
 import 'package:cached_network_image/cached_network_image.dart';

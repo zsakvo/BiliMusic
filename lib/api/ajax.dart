@@ -55,11 +55,14 @@ class Ajax {
     if ((await cookieManager.cookieJar
             .loadForRequest(Uri.parse(ApiConstants.bilibiliBase)))
         .isEmpty) {
+      Log.e("cookies 为空！");
       try {
         await dio.get(ApiConstants.bilibiliBase); //获取默认cookie
       } catch (e) {
         // Log.e("utils/my_dio, ${e.toString()}");
       }
+    } else {
+      Log.e(cookieJar.domainCookies, "cookies 不为空！");
     }
     WbiSign.getWbiKeys(providerContainer);
   }
