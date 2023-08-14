@@ -130,6 +130,8 @@ class _MyListComponentState extends ConsumerState<MyListComponent> {
                       borderRadius: BorderRadius.circular(6),
                       child: CachedNetworkImage(
                         imageUrl: colFolder.cover,
+                        memCacheWidth: 64,
+                        memCacheHeight: 64,
                         width: 56,
                         height: 56,
                         fit: BoxFit.cover,

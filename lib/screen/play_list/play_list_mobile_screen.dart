@@ -104,6 +104,8 @@ class _PlayListMobileScreenState extends ConsumerState<PlayListMobileScreen> {
                     borderRadius: BorderRadius.circular(6),
                     child: CachedNetworkImage(
                       imageUrl: media.cover,
+                      memCacheWidth: 64,
+                      memCacheHeight: 64,
                       width: 48,
                       height: 48,
                       fit: BoxFit.cover,
