@@ -7,6 +7,7 @@ import 'package:bilimusic/router.dart';
 import 'package:bilimusic/screen/config/config_screen.dart';
 import 'package:bilimusic/screen/play_list/play_list_model.dart';
 import 'package:bilimusic/utils/log.dart';
+import 'package:bilimusic/utils/misc.dart';
 import 'package:bilimusic/utils/play.dart';
 
 import 'package:bilimusic/utils/server.dart';
@@ -76,7 +77,7 @@ class MyApp extends HookConsumerWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (Platform.isMacOS) {
+    if (Platform.isMacOS && MiscUtil.isDesktop()) {
       final window = YaruWindow.of(context);
       window.hideTitle();
     }

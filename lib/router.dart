@@ -10,6 +10,7 @@ import 'package:bilimusic/screen/search/search_mobile_page_screen.dart';
 import 'package:bilimusic/screen/search/search_mobile_screen.dart';
 import 'package:bilimusic/screen/search/search_screen.dart';
 import 'package:bilimusic/screen/user/user_screen.dart';
+import 'package:bilimusic/utils/misc.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -128,6 +129,4 @@ final mobileRouter = GoRouter(initialLocation: "/", routes: [
   ),
 ]);
 
-final router = (Platform.isLinux || Platform.isMacOS || Platform.isWindows)
-    ? desktopRouter
-    : mobileRouter;
+final router = MiscUtil.isDesktop() ? desktopRouter : mobileRouter;

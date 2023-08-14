@@ -48,6 +48,7 @@ class _PlayListMobileScreenState extends ConsumerState<PlayListMobileScreen> {
           slivers: [
             SliverAppBar.large(
               title: Text(widget.title),
+              centerTitle: false,
               flexibleSpace: FlexibleSpaceBar(
                   centerTitle: false,
                   expandedTitleScale: 1.0,

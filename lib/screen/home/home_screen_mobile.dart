@@ -25,6 +25,7 @@ class _HomeMobileScreenState extends ConsumerState<HomeMobileScreen> {
       // extendBody: true,
       appBar: AppBar(
         elevation: 3,
+        centerTitle: false,
         title: Icon(
           const IconData(0xe725, fontFamily: "Icon"),
           size: 24,

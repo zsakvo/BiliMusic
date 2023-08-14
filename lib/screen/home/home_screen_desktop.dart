@@ -244,12 +244,13 @@ class _HomeDesktopScreenState extends ConsumerState<HomeDesktopScreen> {
                                                       ),
                                                       child: const Text('退出登录'),
                                                       onPressed: () async {
+                                                        final navCtx =
+                                                            Navigator.of(
+                                                                context);
                                                         await cookieJar
                                                             .deleteAll();
                                                         WbiSign.getWbiKeys(ref);
-                                                        // ignore: use_build_context_synchronously
-                                                        Navigator.of(context)
-                                                            .pop();
+                                                        navCtx.pop();
                                                       }),
                                                 ],
                                               );

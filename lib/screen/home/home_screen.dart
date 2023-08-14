@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bilimusic/screen/home/home_screen_mobile.dart';
+import 'package:bilimusic/utils/misc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -13,9 +14,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDesktop =
-        Platform.isLinux || Platform.isMacOS || Platform.isWindows;
-    return isDesktop
+    return MiscUtil.isDesktop()
         ? HomeDesktopScreen(navigationShell)
         : const HomeMobileScreen();
   }
