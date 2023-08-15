@@ -41,7 +41,7 @@ class _MyProfileComponentState extends ConsumerState<MyProfileComponent> {
                   Log.e("点击登录按钮");
                   context.push("/login");
                 },
-                child: Text('登录')),
+                child: const Text('登录')),
           ],
         ),
       ),

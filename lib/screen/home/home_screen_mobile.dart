@@ -67,6 +67,7 @@ class _HomeMobileScreenState extends ConsumerState<HomeMobileScreen> {
         ],
       ),
       bottomNavigationBar: NavigationBar(
+        height: 64,
         onDestinationSelected: (int index) {
           currentBottomIndex.value = index;
         },
@@ -75,31 +76,31 @@ class _HomeMobileScreenState extends ConsumerState<HomeMobileScreen> {
           NavigationDestination(
               icon: SvgPicture.asset(
                 "assets/svg/tag.svg",
-                width: 22,
+                width: 21,
               ),
               selectedIcon: SvgPicture.asset(
                 "assets/svg/tag_filled.svg",
-                width: 22,
+                width: 21,
               ),
               label: "收藏"),
           NavigationDestination(
               icon: SvgPicture.asset(
                 "assets/svg/explore.svg",
-                width: 22,
+                width: 21,
               ),
               selectedIcon: SvgPicture.asset(
                 "assets/svg/explore_filled.svg",
-                width: 22,
+                width: 21,
               ),
               label: "探索"),
           NavigationDestination(
               icon: SvgPicture.asset(
                 "assets/svg/face.svg",
-                width: 22,
+                width: 21,
               ),
               selectedIcon: SvgPicture.asset(
                 "assets/svg/face_filled.svg",
-                width: 22,
+                width: 21,
               ),
               label: "我的"),
         ],

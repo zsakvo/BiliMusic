@@ -47,9 +47,9 @@ class _SearchMobileScreenState extends ConsumerState<SearchMobileScreen>
         () => tabController.index == 0 ? "video" : "bili_user",
         [tabIndex.value]);
 
-    final filterLabels = useMemoized(
-        () => tabController.index == 0 ? videoFilterLabels : userFilterLabels,
-        [tabIndex.value]);
+    // final filterLabels = useMemoized(
+    //     () => tabController.index == 0 ? videoFilterLabels : userFilterLabels,
+    //     [tabIndex.value]);
 
     final filterParams = useMemoized(
         () => tabController.index == 0 ? viderParamValues : userParamValues,

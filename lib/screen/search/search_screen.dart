@@ -1,12 +1,12 @@
 import 'package:bilimusic/api/search_api.dart';
 import 'package:bilimusic/components/app_top_bar/provider.dart';
-import 'package:bilimusic/components/player/provider.dart';
+
 import 'package:bilimusic/models/search/search_video.dart' as sv show Result;
 import 'package:bilimusic/models/search/search_user.dart' as su show Result;
-import 'package:bilimusic/provider.dart';
+
 import 'package:bilimusic/screen/play_list/play_list_model.dart';
 import 'package:bilimusic/utils/play.dart';
-import 'package:bilimusic/utils/player.dart';
+
 import 'package:bilimusic/utils/string.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

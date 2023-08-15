@@ -18,7 +18,6 @@ class _PlayingMobileScreenState extends ConsumerState<PlayingMobileScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    // final playerModel = widget.playerModel;
     final provider = playerComponentProvider(Player());
     final playerModel = ref.watch(provider);
     return Scaffold(
@@ -27,7 +26,7 @@ class _PlayingMobileScreenState extends ConsumerState<PlayingMobileScreen> {
       body: Column(
         children: [
           Padding(
-              padding: const EdgeInsets.only(left: 0, top: 64),
+              padding: const EdgeInsets.only(left: 0, top: 100),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: CachedNetworkImage(
@@ -115,14 +114,14 @@ class _PlayingMobileScreenState extends ConsumerState<PlayingMobileScreen> {
                           size: 30,
                         ))),
                 Container(
-                  width: 56,
-                  height: 56,
+                  width: 64,
+                  height: 64,
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   child: IconButton.filled(
                       onPressed: ref.read(provider.notifier).playHandler,
                       icon: Icon(
                         playerModel.isPlaying ? Icons.pause : Icons.play_arrow,
-                        size: 30,
+                        size: 36,
                       )),
                 ),
                 SizedBox(

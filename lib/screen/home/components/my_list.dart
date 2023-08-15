@@ -1,11 +1,11 @@
 import 'package:bilimusic/api/discover_api.dart';
 import 'package:bilimusic/api/home_api.dart';
-import 'package:bilimusic/components/tab_bar/filled_tab_bar.dart';
+
 import 'package:bilimusic/models/discover/collect_list.dart';
 import 'package:bilimusic/models/home/fav_list.dart';
 import 'package:bilimusic/provider.dart';
 import 'package:bilimusic/screen/config/config_provider.dart';
-import 'package:bilimusic/utils/log.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,7 @@ class _MyListComponentState extends ConsumerState<MyListComponent> {
   final listNames = ["订阅列表", "在线收藏", "本地歌单"];
   @override
   Widget build(BuildContext context) {
-    final tabController = useTabController(initialLength: 2);
+    // final tabController = useTabController(initialLength: 2);
     final currentFilterIndex = useState(0);
     final upMid = ref.watch(navInfoProvider.select((value) => value?.data.mid));
     final filterKeys = ref.watch(filterKeysProvider);
