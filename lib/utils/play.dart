@@ -14,7 +14,13 @@ class Player {
   List<PlayMedia> get playMediaList => _playMediaList;
 
   Player._internal() {
-    _player = AudioPlayer();
+    _player = AudioPlayer(
+        audioLoadConfiguration: AudioLoadConfiguration(
+            androidLoadControl: AndroidLoadControl(
+              minBufferDuration: const Duration(seconds: 10),
+            ),
+            darwinLoadControl: DarwinLoadControl(
+                preferredForwardBufferDuration: const Duration(seconds: 10))));
     _source = ConcatenatingAudioSource(
       useLazyPreparation: false,
       shuffleOrder: DefaultShuffleOrder(),
@@ -38,7 +44,7 @@ class Player {
           : MemoryCache.instance.update("_currentListKey", listKey);
       final audioSourceList = [
         for (PlayMedia video in resList)
-          AudioSource.uri(
+          LockCachingAudioSource(
               Uri.parse(
                   "http://127.0.0.1:43374/v.m4a?aid=${video.aid}&cid=${video.cid}"),
               tag: video.mediaItem),
