@@ -50,45 +50,53 @@ class _PlayListMobileScreenState extends ConsumerState<PlayListMobileScreen> {
               title: Text(widget.title),
               centerTitle: false,
               flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: false,
-                  expandedTitleScale: 1.0,
-                  titlePadding: EdgeInsets.only(
-                      left: toolBarCollapsed.value ? 56 : 20, bottom: 12),
-                  title: SizedBox(
-                    height: toolBarCollapsed.value ? 36 : 60,
-                    child: toolBarCollapsed.value
-                        ? Text(
-                            widget.title,
-                            style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground),
-                          )
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 6),
-                                child: Text(
-                                  widget.title,
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground),
-                                ),
-                              ),
-                              Text(
-                                'UP：${data.author}\t,\t共${data.medias.length}个媒体',
+                centerTitle: false,
+                expandedTitleScale: 1.0,
+                titlePadding: EdgeInsets.only(
+                    left: toolBarCollapsed.value ? 56 : 20, bottom: 12),
+                title: SizedBox(
+                  height: toolBarCollapsed.value ? 36 : 60,
+                  child: toolBarCollapsed.value
+                      ? Text(
+                          widget.title,
+                          style: TextStyle(
+                              color:
+                                  Theme.of(context).colorScheme.onBackground),
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 6),
+                              child: Text(
+                                widget.title,
                                 style: TextStyle(
-                                    fontSize: 13,
+                                    fontSize: 24,
                                     color: Theme.of(context)
                                         .colorScheme
-                                        .onBackground
-                                        .withOpacity(0.5)),
-                              )
-                            ],
-                          ),
-                  )),
+                                        .onBackground),
+                              ),
+                            ),
+                            Text(
+                              'UP：${data.author}\t,\t共${data.medias.length}个媒体',
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground
+                                      .withOpacity(0.5)),
+                            )
+                          ],
+                        ),
+                ),
+              ),
+              // bottom: PreferredSize(
+              //   preferredSize: const Size.fromHeight(48.0),
+              //   child: Container(
+              //     height: 48.0,
+              //     alignment: Alignment.center,
+              //   ),
+              // ),
             ),
             SliverList.builder(
               itemBuilder: (context, index) {
@@ -104,7 +112,7 @@ class _PlayListMobileScreenState extends ConsumerState<PlayListMobileScreen> {
                     borderRadius: BorderRadius.circular(6),
                     child: CachedNetworkImage(
                       imageUrl: media.cover,
-                      memCacheWidth: 64,
+                      memCacheWidth: 100,
                       memCacheHeight: 64,
                       width: 48,
                       height: 48,

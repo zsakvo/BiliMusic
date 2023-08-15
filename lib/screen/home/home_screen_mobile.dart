@@ -1,3 +1,4 @@
+import 'package:bilimusic/components/player/player_mobile.dart';
 import 'package:bilimusic/screen/home/components/my_list.dart';
 import 'package:bilimusic/screen/home/components/my_profile.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'home_screen_desktop.dart';
 
 class HomeMobileScreen extends StatefulHookConsumerWidget {
   const HomeMobileScreen({super.key});
@@ -22,6 +25,7 @@ class _HomeMobileScreenState extends ConsumerState<HomeMobileScreen> {
   Widget build(BuildContext context) {
     final currentBottomIndex = useState(0);
     return Scaffold(
+      key: ref.watch(homeScaffoldKey),
       // extendBody: true,
       appBar: AppBar(
         elevation: 3,
@@ -43,11 +47,23 @@ class _HomeMobileScreenState extends ConsumerState<HomeMobileScreen> {
           )
         ],
       ),
-      body: PageView(
+      body: Stack(
         children: [
-          MyListComponent(),
-          MyProfileComponent(),
-          MyProfileComponent()
+          PageView(
+            children: const [
+              MyListComponent(),
+              MyProfileComponent(),
+              MyProfileComponent()
+            ],
+          ),
+          const Positioned(
+            left: 0,
+            bottom: 0,
+            child: Padding(
+              padding: EdgeInsets.zero,
+              child: PlayerMobileComponent(),
+            ),
+          )
         ],
       ),
       bottomNavigationBar: NavigationBar(

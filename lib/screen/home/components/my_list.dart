@@ -130,7 +130,7 @@ class _MyListComponentState extends ConsumerState<MyListComponent> {
                       borderRadius: BorderRadius.circular(6),
                       child: CachedNetworkImage(
                         imageUrl: colFolder.cover,
-                        memCacheWidth: 64,
+                        memCacheWidth: 100,
                         memCacheHeight: 64,
                         width: 56,
                         height: 56,
@@ -157,6 +157,9 @@ class _MyListComponentState extends ConsumerState<MyListComponent> {
                 );
               },
               itemCount: collectFolders.value.length,
+            ),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 82),
             )
           ],
         ));
