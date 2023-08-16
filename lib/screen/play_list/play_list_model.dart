@@ -50,10 +50,13 @@ class PlayMedia with _$PlayMedia {
   @ignore
   String get introLine =>
       intro.split("\n").where((e) => e.trim().isNotEmpty).join("\t\t");
+  // @ignore
+  // String get mediaId => md5
+  //     .convert(utf8.encode(title + author + aid.toString() + (cid ?? "")))
+  //     .toString();
   @ignore
-  String get mediaId => md5
-      .convert(utf8.encode(title + author + aid.toString() + (cid ?? "")))
-      .toString();
+  String get mediaId =>
+      md5.convert(utf8.encode(aid.toString() + (cid ?? ""))).toString();
   @ignore
   MediaItem get mediaItem {
     return MediaItem(

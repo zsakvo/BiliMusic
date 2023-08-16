@@ -21,7 +21,8 @@ class PlayerComponentNotifier extends FamilyNotifier<PlayerModel, Player> {
     PlayMedia? media = arg.playMediaList
         .where((element) => element.mediaId == mediaId)
         .firstOrNull;
-    state = state.copyWith(media: media);
+    final isFavorite = ref.read(localFavItemsProvider.notifier).isFav(mediaId);
+    state = state.copyWith(media: media, isFavorite: isFavorite);
   }
 
   // _currentIndexStreamListener(int ?index){
@@ -79,6 +80,7 @@ class PlayerComponentNotifier extends FamilyNotifier<PlayerModel, Player> {
   }
 
   favoriteHandler() {
+    Log.e(state.media?.title, 'favoriteHandler');
     if (state.media != null) {
       ref.read(localFavItemsProvider.notifier).toggleItem(state.media!);
       state = state.copyWith(isFavorite: !state.isFavorite);

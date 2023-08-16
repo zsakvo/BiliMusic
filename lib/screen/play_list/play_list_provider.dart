@@ -131,15 +131,7 @@ class AsyncPlayListNotifier
     final medias = isar.playMedias.where().findAllSync().reversed.toList();
     Log.e(medias, 'meedias');
     for (var element in medias) {
-      playMediaList.add(PlayMedia(
-        intro: "av${element.id}",
-        title: element.title,
-        author: element.author,
-        cover: element.cover,
-        aid: element.id,
-        duration: element.duration,
-        cid: null,
-      ));
+      playMediaList.add(element);
     }
     // return medias;
     return PlayListModel(
