@@ -1,23 +1,24 @@
 import 'package:bilimusic/components/player/provider.dart';
+import 'package:bilimusic/screen/play_list/play_list_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 
-class LocalFavItemsNotifier extends StateNotifier<List<PlayRes>> {
+class LocalFavItemsNotifier extends StateNotifier<List<PlayMedia>> {
   Isar isar = Isar.getInstance()!;
   LocalFavItemsNotifier() : super([]) {
-    state = isar.playRes.where().findAllSync().reversed.toList();
+    state = isar.playMedias.where().findAllSync().reversed.toList();
   }
 
-  addItem(PlayRes res) {
+  addItem(PlayMedia res) {
     state = [res, ...state];
     isar.writeTxnSync(() {
       for (var item in state) {
-        isar.playRes.putSync(item);
+        isar.playMedias.putSync(item);
       }
     });
   }
 
-  removeItem(PlayRes res) {
+  removeItem(PlayMedia res) {
     final delRes =
         state.firstWhere((element) => element.mediaItem.id == res.mediaItem.id);
     state.remove(delRes);
@@ -28,13 +29,13 @@ class LocalFavItemsNotifier extends StateNotifier<List<PlayRes>> {
     });
   }
 
-  toggleItem(PlayRes res) {
+  toggleItem(PlayMedia res) {
     if (state
         .where((element) => element.mediaItem.id == res.mediaItem.id)
         .isEmpty) {
       addItem(res);
     } else {
-      removeItem(res);
+      // removeItem(res);
     }
   }
 
@@ -45,6 +46,6 @@ class LocalFavItemsNotifier extends StateNotifier<List<PlayRes>> {
 }
 
 final localFavItemsProvider =
-    StateNotifierProvider<LocalFavItemsNotifier, List<PlayRes>>((ref) {
+    StateNotifierProvider<LocalFavItemsNotifier, List<PlayMedia>>((ref) {
   return LocalFavItemsNotifier();
 });

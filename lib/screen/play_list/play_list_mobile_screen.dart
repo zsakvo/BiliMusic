@@ -96,6 +96,19 @@ class _PlayListMobileScreenState extends ConsumerState<PlayListMobileScreen> {
               //   ),
               // ),
             ),
+            SliverPadding(
+              padding: const EdgeInsets.only(left: 16, top: 8, bottom: 16),
+              sliver: SliverToBoxAdapter(
+                child: Row(
+                  children: [
+                    FilledButton.icon(
+                        onPressed: () {},
+                        icon: const Icon(Icons.play_arrow),
+                        label: const Text("播放全部"))
+                  ],
+                ),
+              ),
+            ),
             SliverList.builder(
               itemBuilder: (context, index) {
                 final media = data.medias[index];
@@ -104,25 +117,39 @@ class _PlayListMobileScreenState extends ConsumerState<PlayListMobileScreen> {
                     media.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 15),
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.w500),
                   ),
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: CachedNetworkImage(
-                      imageUrl: media.cover,
-                      memCacheWidth: 100,
-                      memCacheHeight: 64,
-                      width: 48,
-                      height: 48,
-                      fit: BoxFit.cover,
+                  leading: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    child: Text(
+                      index.toString(),
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onBackground
+                              .withOpacity(0.6)),
                     ),
                   ),
-                  minLeadingWidth: 12,
+                  // leading: ClipRRect(
+                  //   borderRadius: BorderRadius.circular(6),
+                  //   child: CachedNetworkImage(
+                  //     imageUrl: media.cover,
+                  //     memCacheWidth: 100,
+                  //     memCacheHeight: 64,
+                  //     width: 48,
+                  //     height: 48,
+                  //     fit: BoxFit.cover,
+                  //   ),
+                  // ),
+                  // minLeadingWidth: 12,
                   subtitle: Text("${media.author}\t\t\t${media.durationText}",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontSize: 12,
+                          height: 1.6,
                           color: Theme.of(context)
                               .colorScheme
                               .onBackground
@@ -139,9 +166,9 @@ class _PlayListMobileScreenState extends ConsumerState<PlayListMobileScreen> {
                     onPressed: () {},
                   ),
                   contentPadding: const EdgeInsets.only(
-                      left: 20, top: 2, bottom: 2, right: 0),
+                      left: 20, top: 4, bottom: 4, right: 6),
                   dense: true,
-                  // visualDensity: VisualDensity.compact,
+                  // visualDensity: VisualDensity(vertical: -3),
                   onTap: () {
                     ref.read(provider.notifier).playMedia(index);
                   },

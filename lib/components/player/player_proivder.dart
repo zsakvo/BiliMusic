@@ -80,9 +80,7 @@ class PlayerComponentNotifier extends FamilyNotifier<PlayerModel, Player> {
 
   favoriteHandler() {
     if (state.media != null) {
-      ref
-          .read(localFavItemsProvider.notifier)
-          .toggleItem(state.media as dynamic);
+      ref.read(localFavItemsProvider.notifier).toggleItem(state.media!);
       state = state.copyWith(isFavorite: !state.isFavorite);
     }
   }
