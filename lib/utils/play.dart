@@ -49,16 +49,34 @@ class Player {
                   "http://127.0.0.1:43374/v.m4a?aid=${video.aid}&cid=${video.cid}"),
               tag: video.mediaItem),
       ];
+      final removeEnd = _source.length - 1;
+      Future.microtask(() {
+        return [
+          for (PlayMedia video in resList)
+            LockCachingAudioSource(
+                Uri.parse(
+                    "http://127.0.0.1:43374/v.m4a?aid=${video.aid}&cid=${video.cid}"),
+                tag: video.mediaItem),
+        ];
+      }).then((value) async {
+        await _source.insertAll(0, audioSourceList);
+        _player.seek(Duration.zero, index: index);
+      }).then((value) {
+        _player.play();
+      }).then((value) {
+        if (removeEnd > 1) {
+          _source.removeRange(resList.length, removeEnd);
+        }
+      });
       // await _source.clear();
       // await _source.addAll(audioSourceList);
-      final removeEnd = _source.length - 1;
-      await _source.insertAll(0, audioSourceList);
-      _player.seek(Duration.zero, index: index);
+      // await _source.insertAll(0, audioSourceList);
       // _player.seek(Duration.zero, index: index);
-      _player.play();
-      if (removeEnd > 1) {
-        _source.removeRange(resList.length, removeEnd);
-      }
+      // // _player.seek(Duration.zero, index: index);
+      // _player.play();
+      // if (removeEnd > 1) {
+      //   _source.removeRange(resList.length, removeEnd);
+      // }
     } else {
       _player.seek(Duration.zero, index: index);
     }

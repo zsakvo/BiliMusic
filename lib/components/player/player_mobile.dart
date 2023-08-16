@@ -124,7 +124,7 @@ class _PlayerMobileComponentState extends ConsumerState<PlayerMobileComponent> {
         showModalBottomSheet(
           context: context,
           builder: (context) {
-            return PlayingMobileScreen(playerModel);
+            return const PlayingMobileScreen();
           },
           isScrollControlled: true,
           constraints: BoxConstraints(

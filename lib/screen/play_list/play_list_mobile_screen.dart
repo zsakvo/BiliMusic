@@ -117,7 +117,7 @@ class _PlayListMobileScreenState extends ConsumerState<PlayListMobileScreen> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w500),
+                        fontSize: 14, fontWeight: FontWeight.w600),
                   ),
                   leading: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 6),

@@ -20,7 +20,7 @@ class LocalFavItemsNotifier extends StateNotifier<List<PlayMedia>> {
 
   removeItem(PlayMedia res) {
     final delRes =
-        state.firstWhere((element) => element.mediaItem.id == res.mediaItem.id);
+        state.firstWhere((element) => element.mediaId == res.mediaId);
     state.remove(delRes);
     state = [...state];
 
@@ -30,9 +30,7 @@ class LocalFavItemsNotifier extends StateNotifier<List<PlayMedia>> {
   }
 
   toggleItem(PlayMedia res) {
-    if (state
-        .where((element) => element.mediaItem.id == res.mediaItem.id)
-        .isEmpty) {
+    if (state.where((element) => element.mediaId == res.mediaId).isEmpty) {
       addItem(res);
     } else {
       // removeItem(res);
@@ -41,7 +39,7 @@ class LocalFavItemsNotifier extends StateNotifier<List<PlayMedia>> {
 
   isFav(String? id) {
     if (id == null) return false;
-    return state.where((element) => element.mediaItem.id == id).isNotEmpty;
+    return state.where((element) => element.mediaId == id).isNotEmpty;
   }
 }
 
