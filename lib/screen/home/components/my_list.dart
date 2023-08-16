@@ -131,7 +131,7 @@ class _MyListComponentState extends ConsumerState<MyListComponent> {
               padding: const EdgeInsets.only(left: 16, top: 16, bottom: 8),
               sliver: SliverToBoxAdapter(
                 child: Text(
-                  "在线收藏",
+                  "个人收藏",
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ),
@@ -145,49 +145,93 @@ class _MyListComponentState extends ConsumerState<MyListComponent> {
                     childAspectRatio: 2.3,
                     mainAxisSpacing: 16,
                     crossAxisSpacing: 16),
-                itemCount: favoriteFolders.value.length,
+                itemCount: favoriteFolders.value.length + 1,
                 itemBuilder: (context, index) {
-                  final folder = favoriteFolders.value[index];
-                  // 包含封面，标题，作者，视频数的卡片
-                  return Card(
-                      elevation: 0,
-                      margin: EdgeInsets.zero,
-                      color: Theme.of(context).colorScheme.secondaryContainer,
-                      // 无圆角
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                      child: InkWell(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 4),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(
-                                  folder.title,
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                      fontSize: 18),
-                                ),
-                                Text(
-                                  "${folder.mediaCount} 个媒体",
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground
-                                          .withOpacity(0.5),
-                                      fontSize: 13),
-                                ),
-                              ]),
-                        ),
-                        onTap: () {
-                          context.push(
-                              "/play_list/favorites/${folder.id}/${folder.title}");
-                        },
-                      ));
+                  if (index == 0) {
+                    // 包含封面，标题，作者，视频数的卡片
+                    return Card(
+                        elevation: 0,
+                        margin: EdgeInsets.zero,
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        // 无圆角
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        child: InkWell(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 4),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    "本地收藏夹",
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
+                                        fontSize: 18),
+                                  ),
+                                  Text(
+                                    "纯本地数据哦",
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground
+                                            .withOpacity(0.5),
+                                        fontSize: 13),
+                                  ),
+                                ]),
+                          ),
+                          onTap: () {
+                            context.push("/play_list/local/0/本地收藏");
+                          },
+                        ));
+                  } else {
+                    final folder = favoriteFolders.value[index - 1];
+                    // 包含封面，标题，作者，视频数的卡片
+                    return Card(
+                        elevation: 0,
+                        margin: EdgeInsets.zero,
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        // 无圆角
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        child: InkWell(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 4),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    folder.title,
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
+                                        fontSize: 18),
+                                  ),
+                                  Text(
+                                    "${folder.mediaCount} 个媒体",
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground
+                                            .withOpacity(0.5),
+                                        fontSize: 13),
+                                  ),
+                                ]),
+                          ),
+                          onTap: () {
+                            context.push(
+                                "/play_list/favorites/${folder.id}/${folder.title}");
+                          },
+                        ));
+                  }
                 },
               ),
             ),

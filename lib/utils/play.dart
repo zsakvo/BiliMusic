@@ -22,7 +22,7 @@ class Player {
             darwinLoadControl: DarwinLoadControl(
                 preferredForwardBufferDuration: const Duration(seconds: 10))));
     _source = ConcatenatingAudioSource(
-      useLazyPreparation: false,
+      useLazyPreparation: true,
       shuffleOrder: DefaultShuffleOrder(),
       children: [],
     );
@@ -49,11 +49,16 @@ class Player {
                   "http://127.0.0.1:43374/v.m4a?aid=${video.aid}&cid=${video.cid}"),
               tag: video.mediaItem),
       ];
-      await _source.clear();
-      await _source.addAll(audioSourceList);
+      // await _source.clear();
+      // await _source.addAll(audioSourceList);
+      final removeEnd = _source.length - 1;
+      await _source.insertAll(0, audioSourceList);
       _player.seek(Duration.zero, index: index);
       // _player.seek(Duration.zero, index: index);
       _player.play();
+      if (removeEnd > 1) {
+        _source.removeRange(resList.length, removeEnd);
+      }
     } else {
       _player.seek(Duration.zero, index: index);
     }
