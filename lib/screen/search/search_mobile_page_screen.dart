@@ -66,6 +66,7 @@ class _SearchMobilePageScreen extends ConsumerState<SearchMobilePageScreen> {
                     borderRadius: BorderRadius.circular(20)),
                 contentPadding:
                     const EdgeInsets.only(left: 18, right: 18, top: 22)),
+            autofocus: true,
             onSubmitted: (value) {
               if (value.isEmpty) return;
               GoRouter.of(context).push("/search_result/$value");

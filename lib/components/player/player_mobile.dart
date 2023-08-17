@@ -31,7 +31,11 @@ class _PlayerMobileComponentState extends ConsumerState<PlayerMobileComponent> {
                   .colorScheme
                   .tertiaryContainer
                   .withOpacity(0.4)),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          padding: EdgeInsets.only(
+              left: 14,
+              right: 14,
+              top: 12,
+              bottom: MediaQuery.of(context).padding.bottom),
           child: Row(
             children: [
               ClipRRect(

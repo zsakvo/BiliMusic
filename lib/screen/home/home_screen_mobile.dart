@@ -28,7 +28,7 @@ class _HomeMobileScreenState extends ConsumerState<HomeMobileScreen> {
       key: ref.watch(homeScaffoldKey),
       // extendBody: true,
       appBar: AppBar(
-        // elevation: 3,
+        elevation: 3,
         centerTitle: false,
         title: Icon(
           const IconData(0xe725, fontFamily: "Icon"),
@@ -66,45 +66,45 @@ class _HomeMobileScreenState extends ConsumerState<HomeMobileScreen> {
           )
         ],
       ),
-      bottomNavigationBar: NavigationBar(
-        height: 64,
-        onDestinationSelected: (int index) {
-          currentBottomIndex.value = index;
-        },
-        selectedIndex: currentBottomIndex.value,
-        destinations: [
-          NavigationDestination(
-              icon: SvgPicture.asset(
-                "assets/svg/tag.svg",
-                width: 21,
-              ),
-              selectedIcon: SvgPicture.asset(
-                "assets/svg/tag_filled.svg",
-                width: 21,
-              ),
-              label: "收藏"),
-          NavigationDestination(
-              icon: SvgPicture.asset(
-                "assets/svg/explore.svg",
-                width: 21,
-              ),
-              selectedIcon: SvgPicture.asset(
-                "assets/svg/explore_filled.svg",
-                width: 21,
-              ),
-              label: "探索"),
-          NavigationDestination(
-              icon: SvgPicture.asset(
-                "assets/svg/face.svg",
-                width: 21,
-              ),
-              selectedIcon: SvgPicture.asset(
-                "assets/svg/face_filled.svg",
-                width: 21,
-              ),
-              label: "我的"),
-        ],
-      ),
+      // bottomNavigationBar: NavigationBar(
+      //   height: 64,
+      //   onDestinationSelected: (int index) {
+      //     currentBottomIndex.value = index;
+      //   },
+      //   selectedIndex: currentBottomIndex.value,
+      //   destinations: [
+      //     NavigationDestination(
+      //         icon: SvgPicture.asset(
+      //           "assets/svg/tag.svg",
+      //           width: 21,
+      //         ),
+      //         selectedIcon: SvgPicture.asset(
+      //           "assets/svg/tag_filled.svg",
+      //           width: 21,
+      //         ),
+      //         label: "收藏"),
+      //     NavigationDestination(
+      //         icon: SvgPicture.asset(
+      //           "assets/svg/explore.svg",
+      //           width: 21,
+      //         ),
+      //         selectedIcon: SvgPicture.asset(
+      //           "assets/svg/explore_filled.svg",
+      //           width: 21,
+      //         ),
+      //         label: "探索"),
+      //     NavigationDestination(
+      //         icon: SvgPicture.asset(
+      //           "assets/svg/face.svg",
+      //           width: 21,
+      //         ),
+      //         selectedIcon: SvgPicture.asset(
+      //           "assets/svg/face_filled.svg",
+      //           width: 21,
+      //         ),
+      //         label: "我的"),
+      //   ],
+      // ),
     );
   }
 }
