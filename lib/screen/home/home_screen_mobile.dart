@@ -1,4 +1,5 @@
 import 'package:bilimusic/components/player/player_mobile.dart';
+import 'package:bilimusic/screen/home/components/fav_list.dart';
 import 'package:bilimusic/screen/home/components/my_list.dart';
 import 'package:bilimusic/screen/home/components/my_profile.dart';
 import 'package:flutter/material.dart';
@@ -24,87 +25,115 @@ class _HomeMobileScreenState extends ConsumerState<HomeMobileScreen> {
   @override
   Widget build(BuildContext context) {
     final currentBottomIndex = useState(0);
+    final controller = usePageController(keepPage: true);
+    useEffect(() {
+      listener() {
+        currentBottomIndex.value = controller.page?.round() ?? 0;
+      }
+
+      controller.addListener(listener);
+      return () {
+        controller.removeListener(listener);
+      };
+    }, [controller]);
     return Scaffold(
       key: ref.watch(homeScaffoldKey),
       // extendBody: true,
-      appBar: AppBar(
-        elevation: 3,
-        centerTitle: false,
-        title: Icon(
-          const IconData(0xe725, fontFamily: "Icon"),
-          size: 24,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              context.push("/search");
-            },
-            icon: SvgPicture.asset(
-              "assets/svg/search.svg",
-              width: 22,
-            ),
-          )
-        ],
-      ),
-      body: Stack(
-        children: [
-          PageView(
+      // appBar: AppBar(
+      //   // elevation: 3,
+      //   centerTitle: true,
+      //   title: Icon(
+      //     const IconData(0xe725, fontFamily: "Icon"),
+      //     size: 24,
+      //     color: Theme.of(context).colorScheme.primary,
+      //   ),
+      //   actions: [
+      //     IconButton(
+      //       onPressed: () {
+      //         context.push("/search");
+      //       },
+      //       icon: SvgPicture.asset(
+      //         "assets/svg/search.svg",
+      //         width: 22,
+      //       ),
+      //     )
+      //   ],
+      // ),
+      // body: Stack(
+      //   children: [
+      //     PageView(
+      //       children: const [
+      //         MyListComponent(),
+      //         MyProfileComponent(),
+      //         MyProfileComponent()
+      //       ],
+      //     ),
+      //     // const Positioned(
+      //     //   left: 0,
+      //     //   bottom: 0,
+      //     //   child: Padding(
+      //     //     padding: EdgeInsets.zero,
+      //     //     child: PlayerMobileComponent(),
+      //     //   ),
+      //     // )
+      //   ],
+      // ),
+      body: Column(children: [
+        Expanded(
+          child: PageView(
+            controller: controller,
+            // controller: ref.watch(homePageController),
             children: const [
               MyListComponent(),
-              MyProfileComponent(),
+              FavListComponent(),
               MyProfileComponent()
             ],
           ),
-          const Positioned(
-            left: 0,
-            bottom: 0,
-            child: Padding(
-              padding: EdgeInsets.zero,
-              child: PlayerMobileComponent(),
-            ),
-          )
+        ),
+        const PlayerMobileComponent()
+      ]),
+      bottomNavigationBar: NavigationBar(
+        height: 48,
+        // backgroundColor: Theme.of(context).colorScheme.background,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+        onDestinationSelected: (int index) {
+          currentBottomIndex.value = index;
+          controller.jumpToPage(index);
+        },
+        selectedIndex: currentBottomIndex.value,
+        destinations: [
+          NavigationDestination(
+              icon: SvgPicture.asset(
+                "assets/svg/tag.svg",
+                width: 21,
+              ),
+              selectedIcon: SvgPicture.asset(
+                "assets/svg/tag_filled.svg",
+                width: 21,
+              ),
+              label: "收藏"),
+          NavigationDestination(
+              icon: SvgPicture.asset(
+                "assets/svg/explore.svg",
+                width: 21,
+              ),
+              selectedIcon: SvgPicture.asset(
+                "assets/svg/explore_filled.svg",
+                width: 21,
+              ),
+              label: "探索"),
+          NavigationDestination(
+              icon: SvgPicture.asset(
+                "assets/svg/face.svg",
+                width: 21,
+              ),
+              selectedIcon: SvgPicture.asset(
+                "assets/svg/face_filled.svg",
+                width: 21,
+              ),
+              label: "我的"),
         ],
       ),
-      // bottomNavigationBar: NavigationBar(
-      //   height: 64,
-      //   onDestinationSelected: (int index) {
-      //     currentBottomIndex.value = index;
-      //   },
-      //   selectedIndex: currentBottomIndex.value,
-      //   destinations: [
-      //     NavigationDestination(
-      //         icon: SvgPicture.asset(
-      //           "assets/svg/tag.svg",
-      //           width: 21,
-      //         ),
-      //         selectedIcon: SvgPicture.asset(
-      //           "assets/svg/tag_filled.svg",
-      //           width: 21,
-      //         ),
-      //         label: "收藏"),
-      //     NavigationDestination(
-      //         icon: SvgPicture.asset(
-      //           "assets/svg/explore.svg",
-      //           width: 21,
-      //         ),
-      //         selectedIcon: SvgPicture.asset(
-      //           "assets/svg/explore_filled.svg",
-      //           width: 21,
-      //         ),
-      //         label: "探索"),
-      //     NavigationDestination(
-      //         icon: SvgPicture.asset(
-      //           "assets/svg/face.svg",
-      //           width: 21,
-      //         ),
-      //         selectedIcon: SvgPicture.asset(
-      //           "assets/svg/face_filled.svg",
-      //           width: 21,
-      //         ),
-      //         label: "我的"),
-      //   ],
-      // ),
     );
   }
 }

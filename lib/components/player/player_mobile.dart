@@ -15,128 +15,130 @@ class PlayerMobileComponent extends StatefulHookConsumerWidget {
 }
 
 class _PlayerMobileComponentState extends ConsumerState<PlayerMobileComponent> {
-  final coverWidth = 52.0;
+  final coverWidth = 48.0;
   @override
   Widget build(BuildContext context) {
     final provider = playerComponentProvider(Player());
     final playerModel = ref.watch(provider);
 
     return Material(
+        color: Theme.of(context).colorScheme.surface,
+        elevation: 3,
+        surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
         child: GestureDetector(
-      child: Container(
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-              // borderRadius: BorderRadius.circular(50),
-              color: Theme.of(context)
-                  .colorScheme
-                  .tertiaryContainer
-                  .withOpacity(0.4)),
-          padding: EdgeInsets.only(
-              left: 14,
-              right: 14,
-              top: 12,
-              bottom: MediaQuery.of(context).padding.bottom),
-          child: Row(
-            children: [
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(6),
-                  child: playerModel.media != null
-                      ? CachedNetworkImage(
-                          imageUrl: playerModel.media!.cover,
-                          width: coverWidth,
-                          height: coverWidth,
-                          // memCacheWidth: 36,
-                          // memCacheHeight: 36,
-                          fit: BoxFit.cover,
-                        )
-                      : Container(
-                          width: coverWidth,
-                          height: coverWidth,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .tertiary
-                              .withOpacity(0.1))),
-              Expanded(
-                child: Container(
-                    padding: const EdgeInsets.only(left: 14),
-                    height: coverWidth - 4,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          playerModel.media != null
-                              ? playerModel.media!.title
-                              : '未播放',
-                          style: TextStyle(
-                              fontSize: 15,
+          child: Container(
+              width: MediaQuery.of(context).size.width,
+              // decoration: BoxDecoration(
+              //   // borderRadius: BorderRadius.circular(50),
+              //   color: Theme.of(context).colorScheme.surface,
+              // ),
+              padding: EdgeInsets.only(
+                  left: 14,
+                  right: 14,
+                  top: 12,
+                  bottom: MediaQuery.of(context).padding.bottom + 12),
+              child: Row(
+                children: [
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: playerModel.media != null
+                          ? CachedNetworkImage(
+                              imageUrl: playerModel.media!.cover,
+                              width: coverWidth,
+                              height: coverWidth,
+                              // memCacheWidth: 36,
+                              // memCacheHeight: 36,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(
+                              width: coverWidth,
+                              height: coverWidth,
                               color: Theme.of(context)
                                   .colorScheme
-                                  .onTertiaryContainer),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          playerModel.media != null
-                              ? playerModel.media!.author
-                              : 'Hi~',
-                          style: TextStyle(
-                              fontSize: 13,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onTertiaryContainer
-                                  .withOpacity(0.5)),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    )),
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 18),
-                width: 36,
-                height: 36,
-                child: IconButton.filled(
-                  onPressed: ref.read(provider.notifier).playHandler,
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Theme.of(context).colorScheme.tertiaryContainer),
+                                  .tertiary
+                                  .withOpacity(0.1))),
+                  Expanded(
+                    child: Container(
+                        padding: const EdgeInsets.only(left: 14),
+                        height: coverWidth - 4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              playerModel.media != null
+                                  ? playerModel.media!.title
+                                  : '未播放',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onTertiaryContainer),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              playerModel.media != null
+                                  ? playerModel.media!.author
+                                  : '(゜-゜)つロ 干杯~',
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onTertiaryContainer
+                                      .withOpacity(0.5)),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        )),
                   ),
-                  padding: EdgeInsets.zero,
-                  icon: Icon(
-                    playerModel.isPlaying ? Icons.pause : Icons.play_arrow,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                    size: 20,
+                  Container(
+                    margin: const EdgeInsets.only(left: 18),
+                    width: 36,
+                    height: 36,
+                    child: IconButton.filled(
+                      onPressed: ref.read(provider.notifier).playHandler,
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme.of(context).colorScheme.secondaryContainer),
+                      ),
+                      padding: EdgeInsets.zero,
+                      icon: Icon(
+                        playerModel.isPlaying ? Icons.pause : Icons.play_arrow,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        size: 20,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 6),
-                width: 36,
-                height: 36,
-                child: IconButton(
-                  onPressed: ref.read(provider.notifier).playNextHandler,
-                  padding: EdgeInsets.zero,
-                  icon: Icon(
-                    Icons.skip_next,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                    size: 20,
-                  ),
-                ),
-              )
-            ],
-          )),
-      onTap: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return const PlayingMobileScreen();
+                  Container(
+                    margin: const EdgeInsets.only(left: 6),
+                    width: 36,
+                    height: 36,
+                    child: IconButton(
+                      onPressed: ref.read(provider.notifier).playNextHandler,
+                      padding: EdgeInsets.zero,
+                      icon: Icon(
+                        Icons.skip_next,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        size: 20,
+                      ),
+                    ),
+                  )
+                ],
+              )),
+          onTap: () {
+            if (playerModel.media == null) return;
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return const PlayingMobileScreen();
+              },
+              isScrollControlled: true,
+              constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height,
+                  maxHeight: MediaQuery.of(context).size.height),
+              // enableDrag: false,
+            );
           },
-          isScrollControlled: true,
-          constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height,
-              maxHeight: MediaQuery.of(context).size.height),
-          // enableDrag: false,
-        );
-      },
-    ));
+        ));
   }
 }

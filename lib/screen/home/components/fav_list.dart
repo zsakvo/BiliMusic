@@ -5,6 +5,7 @@ import 'package:bilimusic/models/discover/collect_list.dart';
 import 'package:bilimusic/models/home/fav_list.dart';
 import 'package:bilimusic/provider.dart';
 import 'package:bilimusic/screen/config/config_provider.dart';
+import 'package:bilimusic/utils/log.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_refresh/easy_refresh.dart';
@@ -15,15 +16,15 @@ import 'package:go_router/go_router.dart';
 // import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class MyListComponent extends StatefulHookConsumerWidget {
-  const MyListComponent({super.key});
+class FavListComponent extends StatefulHookConsumerWidget {
+  const FavListComponent({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _MyListComponentState();
+      _FavListComponentState();
 }
 
-class _MyListComponentState extends ConsumerState<MyListComponent> {
+class _FavListComponentState extends ConsumerState<FavListComponent> {
   final EasyRefreshController refreshController =
       EasyRefreshController(controlFinishRefresh: false);
   final listNames = ["订阅列表", "在线收藏", "本地歌单"];
@@ -71,7 +72,7 @@ class _MyListComponentState extends ConsumerState<MyListComponent> {
     }, [upMid]);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("播放列表"),
+        title: const Text("我的收藏"),
         // scrolledUnderElevation: 0,
         actions: [
           IconButton(
@@ -94,8 +95,8 @@ class _MyListComponentState extends ConsumerState<MyListComponent> {
           },
           child: CustomScrollView(
             slivers: [
-              // SliverAppBar(
-              //   title: const Text("播放列表"),
+              // SliverAppBar.medium(
+              //   title: const Text("我的收藏"),
               //   scrolledUnderElevation: 0,
               //   actions: [
               //     IconButton(
@@ -280,63 +281,74 @@ class _MyListComponentState extends ConsumerState<MyListComponent> {
               //   ),
               // ),
               SliverPadding(
-                padding: const EdgeInsets.only(
-                    left: 16, right: 16, bottom: 16, top: 8),
-                sliver: SliverGrid.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      // mainAxisExtent: 196,
-                      childAspectRatio: 1.0,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16),
-                  itemCount: collectFolders.value.length,
-                  itemBuilder: (context, index) {
-                    final folder = collectFolders.value[index];
-                    // 包含封面，标题，作者，视频数的卡片
-                    return InkWell(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
-                            child: CachedNetworkImage(
-                              imageUrl: folder.cover,
-                              // memCacheWidth: 100,
-                              // memCacheHeight: 64,
-                              // width: 100,
-                              // height: 64,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Text(
+                  padding: const EdgeInsets.only(
+                      left: 0, right: 0, bottom: 0, top: 0),
+                  sliver: SliverList.builder(
+                    itemBuilder: (context, index) {
+                      if (index > 0) {
+                        final folder = favoriteFolders.value[index - 1];
+                        return ListTile(
+                          // leading: Icon(
+                          //   const IconData(0xe668, fontFamily: "Icon"),
+                          //   color: Theme.of(context).colorScheme.primary,
+                          // ),
+                          // minLeadingWidth: 32,
+                          contentPadding:
+                              const EdgeInsets.only(left: 16, right: 0),
+                          title: Text(
                             folder.title,
-                            style: Theme.of(context).textTheme.titleSmall,
+                            style: const TextStyle(fontSize: 15),
                           ),
-                          const SizedBox(
-                            height: 4,
+                          trailing: IconButton(
+                            icon: Icon(
+                              Icons.play_circle,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 28,
+                            ),
+                            onPressed: () {},
                           ),
-                          Text(
-                            folder.upper.name,
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onBackground
-                                    .withOpacity(0.5),
-                                fontSize: 13),
+                          subtitle: Text(
+                            "${folder.mediaCount} 个媒体",
+                            style: const TextStyle(fontSize: 13),
                           ),
-                        ],
-                      ),
-                      onTap: () {
-                        context.push(
-                            "/play_list/folders/${folder.id}/${folder.title}");
-                      },
-                    );
-                  },
-                ),
-              ),
+                          onTap: () {
+                            context.push(
+                                "/play_list/favorites/${folder.id}/${folder.title}");
+                          },
+                        );
+                      } else {
+                        return ListTile(
+                          // leading: Icon(
+                          //   const IconData(0xe668, fontFamily: "Icon"),
+                          //   color: Theme.of(context).colorScheme.primary,
+                          // ),
+                          // minLeadingWidth: 32,
+                          contentPadding:
+                              const EdgeInsets.only(left: 16, right: 0),
+                          title: const Text(
+                            "本地收藏夹",
+                            style: TextStyle(fontSize: 15),
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(
+                              Icons.play_circle,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 28,
+                            ),
+                            onPressed: () {},
+                          ),
+                          subtitle: Text(
+                            "0 个媒体",
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                          onTap: () {
+                            context.push("/play_list/local/0/本地收藏");
+                          },
+                        );
+                      }
+                    },
+                    itemCount: favoriteFolders.value.length + 1,
+                  )),
               // SliverList.builder(
               //   itemBuilder: (context, index) {
               //     final colFolder = collectFolders.value[index];
