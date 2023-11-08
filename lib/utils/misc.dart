@@ -10,7 +10,7 @@ class MiscUtil {
   }
 
   static isDesktop() {
-    // return (Platform.isLinux || Platform.isMacOS || Platform.isWindows);
-    return false;
+    return (Platform.isLinux || Platform.isMacOS || Platform.isWindows);
+    // return false;
   }
 }
